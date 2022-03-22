@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Colectivos</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav"></header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Lista de colectivos</h1></div>
+                </div>
+
+                <div th:if="${ msg != null and !msg.empty}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Mensaje:</strong> 
+                        <p th:text="${msg}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <span th:attr="msg=@{null}"></span>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <form class="form" style="margin-top: 2%; margin-bottom: 2%" th:action="@{/filtrarFeriados}" method="post">
+                        <div class="input-group">
+                            <div class="col">
+
+                                <input type="number" name="txtTexto" id="anio" th:value="${year}"
+                                       placeholder="Ingrese un año para buscar dias feriados" 
+                                       class="form-control" style="border-radius: 1%"
+                                       />
+                            </div>
+                            <div  class="col col-lg-2">
+                                <input style="width: 200px;border-radius: 1%"   type="submit" name="btnBuscar" value="Buscar" class="btn btn-warning mx-auto" />
+                            </div>
+                            <div  class="col col-lg-2">
+                                <a style="width: 150px" class="btn btn-warning mx-auto" th:href="@{/nuevoFeriado}"><i class="fas fa-user-plus"></i>Nuevo</a>
+                            </div> 
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+                <div th:if="${feriados != null and !feriados.empty}">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="col:${feriados}">
+                                <td th:text="${col.Motivo.justificacion}"></td>
+                                <td th:text="${#dates.format(col.fecha,'dd/MM/yyyy')}"></td>
+                                <td>
+                                    <a th:href="@{/editarFeriados/} + ${col.idDia}">
+                                        <i class="fas fa-user-edit"></i> Editar</a> |
+
+                                    <a  data-bs-toggle="modal" data-bs-target="#modalEliminar" 
+                                        th:href="@{/delete/(idDia=${col.idDia})}"
+                                        id="deleteButton"
+                                        >
+                                        <i class="fas fa-user-times"></i> Eliminar</a>
+
+
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div th:if="${feriados == null or feriados.empty}">
+                    No hay dias colectivos que mostrar
+                </div>
+            </div>
+        </div>
+        <section>
+            <div class="modal" tabindex="-1" id="modalEliminar" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">¿Esta seguro de eliminar?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+                            <a  href="" id="delRef" class="btn btn-primary">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.table #deleteButton').on('click', function (event) {
+                    event.preventDefault();
+                    var href = $(this).attr('href');
+                    $('#modalEliminar #delRef').attr('href', href);
+                    $('#modalEliminar').modal();
+
+                });
+            });
+
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Motivos</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav"></header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Lista de motivos</h1></div>
+                </div>
+                
+                <div th:if="${ msg != null and !msg.empty}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Mensaje:</strong> 
+                        <p th:text="${msg}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <span th:attr="msg=@{null}"></span>
+                    </div>
+                </div>
+                
+                <div class="row align-items-center">
+                    <form class="form" style="margin-top: 2%; margin-bottom: 2%" th:action="@{/filtrarMotivos}" method="post">
+                        <div class="input-group">
+                            <div class="col">
+                                <input type="text" name="txtTexto" 
+                                       placeholder="Ingrese un motivo a buscar" 
+                                       class="form-control" style="border-radius: 1%"
+                                       />
+                            </div>
+                            <div  class="col col-lg-2">
+                                <input style="width: 200px;border-radius: 1%"   type="submit" name="btnBuscar" value="Buscar" class="btn btn-warning mx-auto" />
+                            </div>
+                            <div  class="col col-lg-2">
+                                <a style="width: 150px" class="btn btn-warning mx-auto" th:href="@{/nuevoMotivo}"><i class="fas fa-user-plus"></i>Nuevo</a>
+                            </div> 
+                        </div>
+                    </form>
+                </div>
+
+                
+
+
+                <div th:if="${motivos != null and !motivos.empty}">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th style="visibility: hidden">ID</th>
+                                <th>Motivo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="mot:${motivos}">
+                                <td style="visibility: hidden" th:text="${mot.idMotivo}"></td>
+                                <td th:text="${mot.justificacion}"></td>
+                                <td>
+                                    <a th:href="@{/editarMotivo/} + ${mot.idMotivo}">
+                                        <i class="fas fa-user-edit"></i> Editar</a> |
+                                    <a th:href="@{/confirmarEliminacion/} + ${mot.idMotivo}">
+                                        <i class="fas fa-user-times"></i> Eliminar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div th:if="${motivos == null or motivos.empty}">
+                    No hay motivos que mostrar
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

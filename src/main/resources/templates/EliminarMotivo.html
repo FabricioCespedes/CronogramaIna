@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Eliminar Motivo</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Eliminación de motivo</h1></div>
+                </div>
+                <div class="row">
+                    <form th:action="@{/eliminarMotivo}" method="post" th:object="${motivo}">
+                        <input type="hidden" name="idMotivo" th:field="*{idMotivo}"/>
+
+
+                        <div class="form-group">
+                            <label for="motivo" class="form-label">Justificacion:</label>
+                            <input type="text" name="justificacion" readonly="true" class="form-control" th:field="*{justificacion}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('justificacion')}"
+                                  th:errors="*{justificacion}"></span>
+                        </div>
+
+                        <div class="mt-2">
+                            <input type="submit" name="btnEliminar" class="btn btn-warning" value="Eliminar"/>
+                            <a th:href="@{/motivos}" class="btn btn-warning">Regresar</a>
+                        </div>
+
+                    </form>    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

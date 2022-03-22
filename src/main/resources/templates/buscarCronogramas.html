@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Cronogramas</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav"></header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Buscar Cronograma</h1></div>
+                </div>
+
+                <div th:if="${ msg != null and !msg.empty}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Mensaje:</strong> 
+                        <p th:text="${msg}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <span th:attr="msg=@{null}"></span>
+                    </div>
+                </div>
+
+
+                <div class="card-body"> <h1>Buscar Cronograma</h1>
+                    <!--  -->
+                    <form th:action="@{/listarCronogramas/}+ ${programa}"  method="post" th:object="${programa}">
+                        <input type="hidden" name="idPrograma" th:field="*{idPrograma}"/>
+                        <div class="mb-3">
+                            <label for="codigo" class="form-label">Código de referencia</label>
+                            <input id="IdPrograma" type="text" class="form-control" name="codigo" th:field="*{codigo}" readonly="true" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('codigo')}"
+                                  th:errors="*{codigo}"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombrePrograma" class="form-label">Nombre del programa</label>
+                            <div class="input-group mb-3">
+                                <a id="btnBuscarPrograma" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalProgramas"><i class="fas fa-search"></i>Buscar Programa</a>
+                                <input required="true" type="text" name="nombrePrograma" th:field="*{nombrePrograma}" 
+                                       readonly="true" class="form-control"  id="namePro" />
+                            </div>
+
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('nombrePrograma')}"
+                                  th:errors="*{nombrePrograma}"></span>
+
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="submit" name="btn" value="Ver Cronograma" 
+                                       style="width: 98%" class="btn btn-secondary m-1 p-1 text-center"/>
+                            </div>
+                            <div class="col">
+                                <a th:href="@{/}" 
+                                   class="btn btn-secondary m-1 p-1 text-center" style="width: 98%" >Regresar</a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+        <section>
+            <div class="modal fade vh-100" id="modalProgramas" tabindex="-1" role="dialog"
+                 aria-labelledby="programaModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content" >
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="programaModalLabel" >Listado de Programas</h5>                                
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        </div>
+                        <div class="modal-body">
+                            <div th:if="${programas != null and !programas.empty}">
+                                <table class="table" id="TablaProgramas">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Código</th>
+                                            <th>Programa</th>
+                                            <th>Horas por día</th>
+                                            <th>Hora de inicio</th>
+                                            <th>Hora de fin</th>
+                                            <th>Estado</th>
+                                            <th>Año</th>
+                                            <th>Centro</th>
+                                            <th>Grupo</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item:${programas}">
+                                            <td th:text="${item.codigo}"></td>
+                                            <td th:text="${item.nombrePrograma}"></td>
+                                            <td th:text="${item.horasDia}"></td>
+                                            <td th:text="${item.horaInicio}"></td>
+                                            <td th:text="${item.horaFin}"></td>
+                                            <td th:text="${item.estado}"></td>
+                                            <td th:text="${item.anio}"></td>
+                                            <td th:text="${item.centro.nombre}"></td>
+                                            <td th:text="${item.grupo}"></td>
+                                            <td>
+                                                <a href="#" th:onclick="seleccionar([[${item.codigo}]],[[${item.nombrePrograma}]])">Seleccionar</a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div th:if="${programas == null or programas.empty}">
+                                No hay programas con cronogramas en la base de datos
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btnCerrar" type="button" class="btn btn-primary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                        </div>                            
+                    </div>
+
+                </div>
+
+
+            </div> <!--FIN MODAL-->
+        </section>
+        
+        <script type="text/javascript">
+            function seleccionar(id, nombre) {
+                $("#IdPrograma").val(id);
+                $("#namePro").val(nombre);
+                $("#btnCerrar").click();
+            }
+
+            $(document).ready(function () {
+                $("#TablaProgramas").DataTable({
+                    "ordering": false,                    
+                    "lengthMenu": [5, 10, 15],
+                    "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                });
+            });
+
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Informacion del centro</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Datos del centro</h1></div>
+                </div>
+                <div class="row">
+                    <form th:action="@{/guardarCentro}" method="post" th:object="${centro}">
+                        <input type="hidden" name="idCentro" th:field="*{idCentro}"/>
+
+
+                        <div class="form-group">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" name="nombre" class="form-control" th:field="*{nombre}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('nombre')}"
+                                  th:errors="*{nombre}"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ubicacion" class="form-label">Ubicación::</label>
+                            <input type="text" name="ubicacion" class="form-control" th:field="*{ubicacion}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('ubicacion')}"
+                                  th:errors="*{ubicacion}"></span>
+                        </div>
+                        
+                        <input type="hidden" id="IdDistrito" name="idDistrito" th:field="*{distrito.IdDistrito}"/>
+                        
+                        <div class="form-group">
+                            <label for="distrito" class="form-label">Distrito:</label>
+                            <div class="input-group mb-3">
+                                <a id="btnBuscarDistrito" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalDistritos"><i class="fas fa-search"></i>Buscar Distrito</a>
+                                <input required="true" id="NombreDistrito" type="text" name="nombreDistrito" th:field="*{distrito.nombreDistrito}" 
+                                       readonly="true" class="form-control"/>   
+                            </div>
+
+                        </div>
+
+                        <div class="mt-2">
+                            <input type="submit" name="btnGuardar" class="btn btn-primary" value="Guardar"/>
+                            <a th:href="@{/centros}" class="btn btn-warning">Regresar</a>
+                        </div>
+
+                    </form>    
+                </div>
+            </div>
+        </div>
+        <section>
+                <div class="modal fade" id="modalDistritos" tabindex="-1" role="dialog"
+                     aria-labelledby="distritoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="motivoModalLabel" >Listado de Distritos</h5>                                
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div th:if="${distritos != null and !distritos.empty}">
+                                    <table class="table" id="TablaCentros">
+                                        <thead>
+                                            <tr>
+                                                <th>Distrito</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item:${distritos}">
+                                                <td th:text="${item.nombreDistrito}"></td>
+                                                <td>
+                                                    <a href="#" th:onclick="seleccionar([[${item.idDistrito}]],[[${item.nombreDistrito}]])">Seleccionar</a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div th:if="${distritos == null or distritos.empty}">
+                                    No hay distritos en la base de datos
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button id="btnCerrar" type="button" class="btn btn-primary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                            </div>                            
+                        </div>
+
+                    </div>
+
+
+                </div> <!--FIN MODAL-->
+            </section>
+        
+        <script type="text/javascript">
+            function seleccionar(id, nombre) {
+                $("#IdDistrito").val(id);
+                $("#NombreDistrito").val(nombre);
+                $("#btnCerrar").click();
+            }
+
+            $(document).ready(function () {
+                $("#TablaCentros").DataTable({
+                    "ordering": false,
+                    "lengthMenu": [5, 10, 15],
+                    "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                })
+            })
+
+        </script>
+    </body>
+</html>

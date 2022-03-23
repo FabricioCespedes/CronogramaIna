@@ -16,5 +16,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
             </header>
         </div>
+        
+        <div th:if="${usuario != null}">
+            <p th:text="${usuario.nombre}"> </p>
+        </div>
+        
     </body>
 </html>

@@ -16,6 +16,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
+        <link rel="stylesheet" href="static/css/style.css"/>
         <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
     </head>
@@ -32,7 +33,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Ausencias</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Administrar vacaciones</a></li>
-                        <li><a class="dropdown-item" href="#">Administrar cronogramas</a></li>
                         <li><a class="dropdown-item" href="#">Administrar incapacidades</a></li>
                         <li><a class="dropdown-item" th:href="@{/feriados}">Administrar colectivos</a></li>
                         <li><a class="dropdown-item" th:href="@{/motivos}">Administrar motivos</a></li>
@@ -42,8 +42,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Usuarios</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Administrar profesores</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profesores}">Administrar profesores</a></li>
                         <li><a class="dropdown-item" href="#">Administradores de Servicios</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Centros</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/centros}">Administrar centros</a></li>
                     </ul>
                 </li>
             </ul>

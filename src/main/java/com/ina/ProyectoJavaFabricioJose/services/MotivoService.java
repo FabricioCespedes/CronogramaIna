@@ -57,4 +57,11 @@ public class MotivoService implements IMotivoService {
         return motivoDao.getById(idMotivo);
     }
 
+    @Override
+    public List<Motivo> existeMotJus(String just) {
+        return (List<Motivo>) motivoDao.findByJustificacion(just);
+    }
+
+
+
 }

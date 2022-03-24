@@ -56,6 +56,7 @@ public class CentroController {
     public String guardar(@Valid Centro centro, RedirectAttributes redir) {
         String msg = "";
         
+        
         centroService.guardar(centro);
         
         msg = "Centro insertado";

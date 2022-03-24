@@ -6,7 +6,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
     <head th:replace="plantillas/plantilla1 ::head">
-        <title>Informacion del centro</title>
+        <title>Informacion del profesor</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
@@ -16,12 +16,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="container-lg p-20 bg-warning">
             <div class="container-lg" style="background-color: antiquewhite">
                 <div class="card border-0 bg-warning" style="margin-top: 2%" >
-                    <div class="card-header"> <h1>Datos del centro</h1></div>
+                    <div class="card-header"> <h1>Datos del profesor</h1></div>
                 </div>
                 <div class="row">
-                    <form th:action="@{/guardarCentro}" method="post" th:object="${centro}">
-                        <input type="hidden" name="idCentro" th:field="*{idCentro}"/>
-
+                    <form th:action="@{/guardarProfesor}" method="post" th:object="${profesor}">
+                        
+                        <div class="form-group">
+                            <label for="idProfesor" class="form-label">Nombre:</label>
+                            <input type="number" name="idProfesor" class="form-control" th:field="*{idProfesor}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('idProfesor')}"
+                                  th:errors="*{idProfesor}"></span>
+                        </div>
 
                         <div class="form-group">
                             <label for="nombre" class="form-label">Nombre:</label>
@@ -32,20 +38,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                         
                         <div class="form-group">
-                            <label for="ubicacion" class="form-label">Ubicación::</label>
-                            <input type="text" name="ubicacion" class="form-control" th:field="*{ubicacion}" />
+                            <label for="apellido1" class="form-label">Primer apellido:</label>
+                            <input type="text" name="apellido1" class="form-control" th:field="*{apellido1}" />
                             <span class="text-danger font-italic"
-                                  th:if="${#fields.hasErrors('ubicacion')}"
-                                  th:errors="*{ubicacion}"></span>
+                                  th:if="${#fields.hasErrors('apellido1')}"
+                                  th:errors="*{apellido1}"></span>
                         </div>
                         
-                        <input type="hidden" id="IdDistrito" name="idDistrito" th:field="*{distrito.IdDistrito}"/>
+                        <div class="form-group">
+                            <label for="apellido2" class="form-label">Segundo apellido:</label>
+                            <input type="text" name="apellido2" class="form-control" th:field="*{apellido2}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('apellido2')}"
+                                  th:errors="*{apellido2}"></span>
+                        </div>
+                        
+                        <input type="hidden" id="IdCentro" name="idCentro" th:field="*{centro.idCentro}"/>
                         
                         <div class="form-group">
-                            <label for="distrito" class="form-label">Distrito:</label>
+                            <label for="centro" class="form-label">Centro:</label>
                             <div class="input-group mb-3">
-                                <a id="btnBuscarDistrito" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalDistritos"><i class="fas fa-search"></i>Buscar Distrito</a>
-                                <input required="true" id="NombreDistrito" type="text" name="nombreDistrito" th:field="*{distrito.nombreDistrito}" 
+                                <a id="btnBuscarCentro" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalCentros"><i class="fas fa-search"></i>Buscar Centro</a>
+                                <input required="true" id="NombreCentro" type="text" name="nombreCentro" th:field="*{centro.nombre}" 
                                        readonly="true" class="form-control"/>   
                             </div>
 
@@ -53,7 +67,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                         <div class="mt-2">
                             <input type="submit" name="btnGuardar" class="btn btn-primary" value="Guardar"/>
-                            <a th:href="@{/centros}" class="btn btn-warning">Regresar</a>
+                            <a th:href="@{/profesores}" class="btn btn-warning">Regresar</a>
                         </div>
 
                     </form>    
@@ -61,36 +75,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
         <section>
-                <div class="modal fade" id="modalDistritos" tabindex="-1" role="dialog"
-                     aria-labelledby="distritoModalLabel" aria-hidden="true">
+                <div class="modal fade" id="modalCentros" tabindex="-1" role="dialog"
+                     aria-labelledby="centroModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="motivoModalLabel" >Listado de Distritos</h5>                                
+                                <h5 class="modal-title" id="motivoModalLabel" >Listado de Centros</h5>                                
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div th:if="${distritos != null and !distritos.empty}">
-                                    <table class="table" id="TablaDistritos">
+                                <div th:if="${centros != null and !centros.empty}">
+                                    <table class="table" id="TablaCentros">
                                         <thead>
                                             <tr>
-                                                <th>Distrito</th>
+                                                <th>Centro</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="item:${distritos}">
-                                                <td th:text="${item.nombreDistrito}"></td>
+                                            <tr th:each="item:${centros}">
+                                                <td th:text="${item.nombre}"></td>
                                                 <td>
-                                                    <a href="#" th:onclick="seleccionar([[${item.idDistrito}]],[[${item.nombreDistrito}]])">Seleccionar</a>
+                                                    <a href="#" th:onclick="seleccionar([[${item.idCentro}]],[[${item.nombre}]])">Seleccionar</a>
                                                 </td>
                                             </tr>
 
                                         </tbody>
                                     </table>
                                 </div>
-                                <div th:if="${distritos == null or distritos.empty}">
-                                    No hay distritos en la base de datos
+                                <div th:if="${centros == null or centros.empty}">
+                                    No hay centros en la base de datos
                                 </div>
 
                             </div>
@@ -109,13 +123,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         
         <script type="text/javascript">
             function seleccionar(id, nombre) {
-                $("#IdDistrito").val(id);
-                $("#NombreDistrito").val(nombre);
+                $("#IdCentro").val(id);
+                $("#NombreCentro").val(nombre);
                 $("#btnCerrar").click();
             }
 
             $(document).ready(function () {
-                $("#TablaDistritos").DataTable({
+                $("#TablaCentros").DataTable({
                     "ordering": false,
                     "lengthMenu": [5, 10, 15],
                     "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}

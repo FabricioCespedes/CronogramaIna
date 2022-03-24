@@ -18,15 +18,13 @@ public class ProfesorService implements IProfesorService {
 
     @Override
     public void guardar(Profesor profesor) {
-
         profesorDao.save(profesor);
-
     }
 
     @Override
     public void eliminar(Profesor profesor) {
 
-        profesorDao.delete(profesor);
+        profesorDao.deleteById(profesor.getIdProfesor());
 
     }
 

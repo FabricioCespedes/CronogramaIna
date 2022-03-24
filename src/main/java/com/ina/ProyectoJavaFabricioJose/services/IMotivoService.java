@@ -17,4 +17,5 @@ public interface IMotivoService {
     public List<Motivo> listar();
     public List<Motivo> listar(String justificacion);
     public Motivo obtenerMotivo(int idMotivo);
+    public List<Motivo> existeMotJus(String just);
 }

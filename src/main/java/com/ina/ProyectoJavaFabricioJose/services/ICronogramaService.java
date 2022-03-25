@@ -5,17 +5,20 @@
 package com.ina.ProyectoJavaFabricioJose.services;
 
 import com.ina.ProyectoJavaFabricioJose.domain.*;
+import java.sql.Time;
+import java.util.Date;
+
 import java.util.List;
 
-
 public interface ICronogramaService {
-    
-    
-    public Cronograma generarCronograma(Cronograma cronograma);
-    
-    public List<Cronograma> listarCronogramas(Programa programa);
 
-    public Cronograma obtenerCronograma(int idCronograma);
-     
-        
+    public List<Cronograma> listarCronogramas(Integer idPrograma);
+
+    public Cronograma obtenerCronograma(Integer idCronograma);
+
+    public String guardar(Integer idModulo,Integer idPrograma, Long idProfesor, double horasDia, String horaInicio, String horaFin, String estado,Integer idCentro, Date fechaInicio  );
+
+    public int eliminar(Integer idCronograma);
+    
+    public int ingresarDias(boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, Integer idModulo, Integer idPrograma, int retorno);
 }

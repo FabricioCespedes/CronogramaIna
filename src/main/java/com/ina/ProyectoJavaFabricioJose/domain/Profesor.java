@@ -54,9 +54,8 @@ public class Profesor implements Serializable{
 //    
 //    //Relacion de un profesor a muchas asignaciones de programa
     @OneToMany(mappedBy = "profesor")
-    private List<AsignacionProfesor> asignacionProfesor;
-    
-
+    private List<AsignacionProfesor> asignacionProfesor;    
+        
     
     
 }

@@ -8,10 +8,10 @@ import com.ina.ProyectoJavaFabricioJose.dao.ICronogramaDao;
 import com.ina.ProyectoJavaFabricioJose.domain.Cronograma;
 import com.ina.ProyectoJavaFabricioJose.domain.Programa;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class CronogramaService implements ICronogramaService{
@@ -19,20 +19,10 @@ public class CronogramaService implements ICronogramaService{
     @Autowired
     private ICronogramaDao cronogramaDao;
    
-    @Override
-    public Cronograma generarCronograma(Cronograma cronograma) {
-
-            int retorno = 0;
-            HashMap resultado = cronogramaDao.generarCronograma(cronograma.getModuloCronograma().getIdModulo(), cronograma.getProgramaCronograma().getIdPrograma(), cronograma.getHorasDia(),
-                    cronograma.getHorasInicio(), cronograma.getHoraFin(), cronograma.getEstado(), cronograma.getProgramaCronograma().getCentro().getIdCentro(), cronograma.getFechaInicio(), cronograma.getRetorno());                 
-            cronograma.setFechaInicio((Date)resultado.get("FECHA_INICIO"));
-            cronograma.setRetorno((Integer)resultado.get("retorno"));         
-        return cronograma;
-    }
 
     @Override
-    public List<Cronograma> listarCronogramas(Programa programa) {
-            List<Cronograma> lista = (List<Cronograma>) cronogramaDao.findByProgramaContains(programa);
+    public List<Cronograma> listarCronogramas(Integer idPrograma) {
+            List<Cronograma> lista = (List<Cronograma>) cronogramaDao.listar(idPrograma);
             return lista;       
     }
     
@@ -40,10 +30,50 @@ public class CronogramaService implements ICronogramaService{
 
 
     @Override
-    public Cronograma obtenerCronograma(int idCronograma) {
+    public Cronograma obtenerCronograma(Integer idCronograma) {
         return cronogramaDao.findById(idCronograma).orElse(null);
     }
 
+
+
+
+    @Override
+    public int eliminar(Integer idCronograma) {
+        int resultado = 1;
+        try {
+            cronogramaDao.deleteById(idCronograma);
+        } catch (Exception e) {
+            resultado = 0;
+        }
+
+        return resultado;
+    }
+
+    @Override
+    public int ingresarDias(boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, Integer idModulo, Integer idPrograma, int retorno) {
+        int resultado = -1;
+        try {
+           resultado = cronogramaDao.ingresarDias((lunes ? 1 : 0), (martes ? 1 : 0), (miercoles ? 1 : 0), (jueves ? 1 : 0), (viernes ? 1 : 0), (sabado ? 1 : 0), idModulo, idPrograma, retorno);
+        } catch (Exception e) {
+            resultado = 1;
+        }
+
+        return resultado;
+    }
+
+    @Override
+    public String guardar(Integer idModulo, Integer idPrograma, Long idProfesor, double horasDia, String horaInicio, String horaFin, String estado, Integer idCentro, Date fechaInicio) {
+        String fechaInicioR;
+        try {
+           return cronogramaDao.generarCronograma(idModulo, idPrograma, horasDia, horaInicio, horaFin, estado, idCentro, fechaInicio);
+                   
+        } catch (Exception e) {
+          fechaInicioR ="0";
+        }
+
+        return fechaInicioR;
+        
+    }
     
     
 }

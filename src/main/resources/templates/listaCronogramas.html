@@ -14,7 +14,7 @@
         <div class="container-lg p-20 bg-warning">
             <div class="container-lg" style="background-color: antiquewhite">
                 <div class="card border-0 bg-warning" style="margin-top: 2%" >
-                    <div class="card-header"> <h1>Lista de colectivos</h1></div>
+                    <div class="card-header"> <h1>Lista de cronogramas</h1></div>
                 </div>
 
                 <div th:if="${ msg != null and !msg.empty}">
@@ -25,29 +25,6 @@
                         <span th:attr="msg=@{null}"></span>
                     </div>
                 </div>
-
-                <div class="row align-items-center">
-                    <form class="form" style="margin-top: 2%; margin-bottom: 2%" th:action="@{/filtrarFeriados}" method="post">
-                        <div class="input-group">
-                            <div class="col">
-
-                                <input type="number" name="txtTexto" id="anio" th:value="${year}"
-                                       placeholder="Ingrese un año para buscar dias feriados" 
-                                       class="form-control" style="border-radius: 1%"
-                                       />
-                            </div>
-                            <div  class="col col-lg-2">
-                                <input style="width: 200px;border-radius: 1%"   type="submit" name="btnBuscar" value="Buscar" class="btn btn-warning mx-auto" />
-                            </div>
-                            <div  class="col col-lg-2">
-                                <a style="width: 150px" class="btn btn-warning mx-auto" th:href="@{/nuevoFeriado}"><i class="fas fa-user-plus"></i>Nuevo</a>
-                            </div> 
-                        </div>
-                    </form>
-                </div>
-
-
-
 
                 <div th:if="${feriados != null and !feriados.empty}">
                     <table class="table  table-striped">
@@ -67,7 +44,7 @@
 
                                     <a  data-bs-toggle="modal" data-bs-target="#modalEliminar" 
                                         th:href="@{/delete/(idDia=${col.idDia})}"
-                                        id="deleteButton"/(idDia=${col.idDia}
+                                        id="deleteButton"
                                         >
                                         <i class="fas fa-user-times"></i> Eliminar</a>
 

@@ -11,43 +11,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProgramaService implements IProgramaService{
-    
+public class ProgramaService implements IProgramaService {
+
     @Autowired
     private IProgramaDao programaDao;
 
     @Override
     public void guardar(Programa programa) {
 
-            programaDao.save(programa);
+        programaDao.save(programa);
 
     }
 
     @Override
     public void eliminar(Programa programa) {
 
-            programaDao.delete(programa);
+        programaDao.delete(programa);
 
     }
 
     @Override
     public List<Programa> listar() {
 
-            return programaDao.findAll();
+        return programaDao.findAll();
 
     }
 
     @Override
     public List<Programa> listar(String nombrePrograma) {
 
-            return (List<Programa>) programaDao.findByNombreProgramaContains(nombrePrograma);
+        return (List<Programa>) programaDao.findByNombreProgramaContains(nombrePrograma);
 
     }
 
     @Override
-    public Programa obtenerModulo(Integer idPrograma) {
+    public Programa obtenerPrograma(Integer idPrograma) {
 
-            return programaDao.findById(idPrograma).orElse(null);
+        return programaDao.findById(idPrograma).orElse(null);
 
     }
 
@@ -55,5 +55,9 @@ public class ProgramaService implements IProgramaService{
     public List<Programa> listarProgramasConCronogramas() {
         return (List<Programa>) programaDao.listarProgrmasConCronogramas();
     }
-    
+
+    @Override
+    public List<Programa> listarProgramasSinCronogramas() {
+        return (List<Programa>) programaDao.listarProgrmasSinCronogramas();
+    }
 }

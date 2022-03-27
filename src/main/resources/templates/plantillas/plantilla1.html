@@ -27,23 +27,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Cronogramas</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/cronogramas}">Administrar cronogramas</a></li>
+                        <li><a class="dropdown-item" th:href="@{/programas}">Administrar Programas</a></li>
+                        <li><a class="dropdown-item" th:href="@{/modulos}">Administrar Módulos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Ausencias</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Administrar vacaciones</a></li>
-                        <li><a class="dropdown-item" href="#">Administrar incapacidades</a></li>
-                        <li><a class="dropdown-item" th:href="@{/feriados}">Administrar colectivos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/feriados}">Administrar dias colectivos</a></li>
                         <li><a class="dropdown-item" th:href="@{/motivos}">Administrar motivos</a></li>
-                        <li><a class="dropdown-item" href="#">Otros</a></li>
+                        <li><a class="dropdown-item" th:href="@{/diasAusentes}">Dias ausentes de profesor</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Usuarios</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/profesores}">Administrar profesores</a></li>
-                        <li><a class="dropdown-item" href="#">Administradores de Servicios</a></li>
+                        <li><a class="dropdown-item" th:href="@{/usuarios}">Administradores de Servicios</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

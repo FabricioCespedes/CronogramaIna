@@ -18,19 +18,22 @@ public class DiaAusente implements Serializable {
     private static final long serialVersionUID=1L;
        
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_DIA_AUSENTE")
+    private int idDiaAusente;
+    
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "FECHA_INICIO", unique = true)
     private Date fechaInicio;
     
-    @Id
+
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "FECHA_FIN", unique = true)
     private Date fechaFin;
     
     //Relación de muchos dias ausentes a un profesor
-    @Id
     @JoinColumn(name = "ID_PROFESOR", nullable = false)
     @ManyToOne(optional = false)
     private Profesor profesor;

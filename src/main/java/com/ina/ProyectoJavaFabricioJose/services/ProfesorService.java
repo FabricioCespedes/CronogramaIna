@@ -17,15 +17,27 @@ public class ProfesorService implements IProfesorService {
     private IProfesorDao profesorDao;
 
     @Override
-    public void guardar(Profesor profesor) {
-        profesorDao.save(profesor);
+    public int guardar(Profesor profesor) {
+        int resultado = 1;
+        try {
+            profesorDao.save(profesor);
+        } catch (Exception e) {
+            resultado = 0;
+        }
+        return resultado;
     }
 
     @Override
-    public void eliminar(Profesor profesor) {
+    public int eliminar(Profesor profesor) {
 
         profesorDao.deleteById(profesor.getIdProfesor());
-
+        int resultado = 1;
+        try {
+            
+        } catch (Exception e) {
+            resultado = 0;
+        }
+        return resultado;
     }
 
     @Override

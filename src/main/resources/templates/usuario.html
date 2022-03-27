@@ -6,7 +6,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
     <head th:replace="plantillas/plantilla1 ::head">
-        <title>Informacion del profesor</title>
+        <title>Informacion del centro</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
@@ -16,17 +16,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="container-lg p-20 bg-warning">
             <div class="container-lg" style="background-color: antiquewhite">
                 <div class="card border-0 bg-warning" style="margin-top: 2%" >
-                    <div class="card-header"> <h1>Datos del profesor</h1></div>
+                    <div class="card-header"> <h1>Datos del usuario</h1></div>
                 </div>
                 <div class="row">
-                    <form th:action="@{/guardarProfesor}" method="post" th:object="${profesor}">
+                    <form th:action="@{/guardarUsuario}" method="post" th:object="${usuario}">
                         
                         <div class="form-group">
-                            <label for="idProfesor" class="form-label">Cédula:</label>
-                            <input type="number" name="idProfesor" class="form-control" th:field="*{idProfesor}" />
+                            <label for="idUsuario" class="form-label">Cédula:</label>
+                            <input type="number" name="idUsuario" class="form-control" th:field="*{idUsuario}" />
                             <span class="text-danger font-italic"
-                                  th:if="${#fields.hasErrors('idProfesor')}"
-                                  th:errors="*{idProfesor}"></span>
+                                  th:if="${#fields.hasErrors('idUsuario')}"
+                                  th:errors="*{idUsuario}"></span>
                         </div>
 
                         <div class="form-group">
@@ -53,6 +53,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                   th:errors="*{apellido2}"></span>
                         </div>
                         
+                        <div class="form-group">
+                            <label for="contrasenia" class="form-label">Contraseña:</label>
+                            <input type="text" name="contrasenia" class="form-control" th:field="*{contrasenia}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('contrasenia')}"
+                                  th:errors="*{contrasenia}"></span>
+                        </div>
+                        
                         <input type="hidden" id="IdCentro" name="idCentro" th:field="*{centro.idCentro}"/>
                         
                         <div class="form-group">
@@ -67,7 +75,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                         <div class="mt-2">
                             <input type="submit" name="btnGuardar" class="btn btn-primary" value="Guardar"/>
-                            <a th:href="@{/profesores}" class="btn btn-warning">Regresar</a>
+                            <a th:href="@{/usuarios}" class="btn btn-warning">Regresar</a>
                         </div>
 
                     </form>    

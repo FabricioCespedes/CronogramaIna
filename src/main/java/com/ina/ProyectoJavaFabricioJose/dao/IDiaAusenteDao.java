@@ -4,7 +4,8 @@
  */
 package com.ina.ProyectoJavaFabricioJose.dao;
 
-import com.ina.ProyectoJavaFabricioJose.domain.DiaFeriado;
+import com.ina.ProyectoJavaFabricioJose.domain.DiaAusente;
+import java.util.Date;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,9 +13,13 @@ import org.springframework.data.jpa.repository.Query;
  *
  * @author josea
  */
-public interface IDiaAusente extends JpaRepository<DiaFeriado, Integer> {
+public interface IDiaAusenteDao extends JpaRepository<DiaAusente, Integer> {
     
-    @Query(value = "Select * from DIAS_FERIADOS d WHERE YEAR(FECHA) =?1", nativeQuery = true)
-    public Iterable<DiaFeriado> buscarPorAnio(String anio);
+    @Query(value = "Select * from DIAS_AUSENTES d WHERE ID_PROFESOR =?1", nativeQuery = true)
+    public Iterable<DiaAusente> filtrarPorProfesor(Long idProfesor);
+    
+    
+    
+    
     
 }

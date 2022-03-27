@@ -22,28 +22,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProfesorController {
-    
+
     @Autowired
     private ProfesorService profesorService;
-    
+
     @Autowired
     private CentroService centroService;
-    
+
     @GetMapping("/profesores")
     public String listaCliente(Model model, @ModelAttribute("msg") String msg) {
         List<Profesor> lista = profesorService.listar();
         model.addAttribute("profesores", lista);
         return "listaProfesores";
     }
-    
+
     @PostMapping("/filtrarProfesores")
     public String filtar(String txtTexto, Model model) {
         List<Profesor> lista = profesorService.listar(txtTexto);
         model.addAttribute("profesores", lista);
         return "listaProfesores";
     }
-    
-    
+
     @GetMapping("/nuevoProfesor")
     public String nuevo(Profesor profesor, Model model) {
 
@@ -56,36 +55,38 @@ public class ProfesorController {
     @PostMapping("/guardarProfesor")
     public String guardar(@Valid Profesor profesor, RedirectAttributes redir) {
         String msg = "";
-        
-        profesorService.guardar(profesor);
-        
-        msg = "Profesor insertado";
-        
-        
+
+        if (profesorService.guardar(profesor) != 0) {
+
+            msg = "Profesor insertado";
+
+        } else {
+            msg = "No se pudo insertar el profesor";
+        }
 
         redir.addFlashAttribute("msg", msg);
 
         return "redirect:/profesores";
     }
-    
+
     @GetMapping("/editarProfesor/{idProfesor}")
     public String editar(Profesor profesor, Model model, RedirectAttributes redir) {
 
         profesor = profesorService.obtenerProfesor(profesor.getIdProfesor());
         if (profesor != null) {
-             List<Centro> lista = centroService.listar();
+            List<Centro> lista = centroService.listar();
             model.addAttribute("centros", lista);
             model.addAttribute("profesor", profesor);
             return "profesor";
         }
-        String msg = "No se logró cagar el profesor";
+        String msg = "No se logró cargar el profesor";
 
         redir.addFlashAttribute("msg", msg);
 
         return "redirect:/profesores";
     }
-    
-    @RequestMapping(value = "/deletePro", method = {RequestMethod.DELETE, RequestMethod.GET,RequestMethod.PUT })
+
+    @RequestMapping(value = "/deletePro", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
     public String eliminar(Long idProfesor, Model model) {
         Profesor profesor = profesorService.obtenerProfesor(idProfesor);
         model.addAttribute("profesor", profesor);

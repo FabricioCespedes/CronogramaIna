@@ -13,14 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Data
+
 @Entity
 @Table(name = "PROGRAMAS")
 public class Programa implements Serializable {
@@ -43,23 +43,20 @@ public class Programa implements Serializable {
     
     
     @Column(name = "HORAS_DIA")
-    @NotEmpty(message="Las horas por día del programa son obligatorias")
     private double horasDia;
     
     @Column(name = "HORA_INICIO")
-    @NotEmpty(message="Las horas por día del programa son obligatorias")
-    private Time horaInicio;
+    private String horaInicio;
     
     @Column(name = "HORA_FIN")
-    @NotEmpty(message="Las horas por día del programa son obligatorias")
-    private Time horaFin;
+    @DateTimeFormat(pattern = "HH:mm")
+    private String horaFin;
     
     @Column(name = "ESTADO")
     @NotEmpty(message="El estado del programa es obligatorio")
     private String estado;
     
     @Column(name = "ANIO")
-    @NotEmpty(message="El año del programa es obligatorio")
     private int anio;
     
     //Relación de muchos programas a un centro
@@ -68,7 +65,6 @@ public class Programa implements Serializable {
     private Centro centro;
     
     @Column(name = "GRUPO")
-    @NotEmpty(message="El grupo que recibe el programa es obligatorio")
     private int grupo;
 
     //Relacion de un programa a muchas asignaciones de programa
@@ -82,4 +78,110 @@ public class Programa implements Serializable {
      //Relacion de un modulo a muchos cronogramas
     @OneToMany(mappedBy = "programa")
     private List<DiasProgramas> diasProgramas;
+
+    public int getIdPrograma() {
+        return idPrograma;
+    }
+
+    public void setIdPrograma(int idPrograma) {
+        this.idPrograma = idPrograma;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombrePrograma() {
+        return nombrePrograma;
+    }
+
+    public void setNombrePrograma(String nombrePrograma) {
+        this.nombrePrograma = nombrePrograma;
+    }
+
+    public double getHorasDia() {
+        return horasDia;
+    }
+
+    public void setHorasDia(double horasDia) {
+        this.horasDia = horasDia;
+    }
+
+    public String getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public String getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(String horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+
+    public Centro getCentro() {
+        return centro;
+    }
+
+    public void setCentro(Centro centro) {
+        this.centro = centro;
+    }
+
+    public int getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(int grupo) {
+        this.grupo = grupo;
+    }
+
+    public List<AsignacionProfesor> getAsignacionProfesor() {
+        return asignacionProfesor;
+    }
+
+    public void setAsignacionProfesor(List<AsignacionProfesor> asignacionProfesor) {
+        this.asignacionProfesor = asignacionProfesor;
+    }
+
+    public List<Cronograma> getCronograma() {
+        return cronograma;
+    }
+
+    public void setCronograma(List<Cronograma> cronograma) {
+        this.cronograma = cronograma;
+    }
+
+    public List<DiasProgramas> getDiasProgramas() {
+        return diasProgramas;
+    }
+
+    public void setDiasProgramas(List<DiasProgramas> diasProgramas) {
+        this.diasProgramas = diasProgramas;
+    }
+    
+    
 }

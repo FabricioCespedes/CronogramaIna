@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Informacion del modulo</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Datos del modulo</h1></div>
+                </div>
+                <div class="row">
+                    <form th:action="@{/guardarModulo}" method="post" th:object="${modulo}">
+                        
+                         <input type="hidden" name="idModulo" th:field="*{idModulo}"/>
+                         
+                         <div class="form-group">
+                            <label for="codigo" class="form-label">Código:</label>
+                            <input type="text" name="codigo" class="form-control" th:field="*{codigo}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('codigo')}"
+                                  th:errors="*{codigo}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nombreModulo" class="form-label">Nombre del módulo:</label>
+                            <input type="text" name="nombreModulo" class="form-control" th:field="*{nombreModulo}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('nombreModulo')}"
+                                  th:errors="*{nombreModulo}"></span>
+                        </div>
+                        
+                        
+                        <input type="hidden" id="IdModulo" name="idModulo" th:field="*{modulo.idModulo}"/>
+                        
+                        <div class="form-group">
+                            <label for="modulo" class="form-label">Módulo Requerido:</label>
+                            <div class="input-group mb-3">
+                                <a id="btnBuscarModulo" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalModulos"><i class="fas fa-search"></i>Buscar Modulo</a>
+                                <input required="true" id="NombreModulo" type="text" name="nombreModulo" th:field="*{modulo.nombreModulo}" 
+                                       readonly="true" class="form-control"/>   
+                            </div>
+
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="horasTotales" class="form-label">Horas totales:</label>
+                            <input type="number" name="horasTotales" class="form-control" th:field="*{horasTotales}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('horasTotales')}"
+                                  th:errors="*{horasTotales}"></span>
+                        </div>
+
+                        <div class="mt-2">
+                            <input type="submit" name="btnGuardar" class="btn btn-primary" value="Guardar"/>
+                            <a th:href="@{/modulos}" class="btn btn-warning">Regresar</a>
+                        </div>
+
+                    </form>    
+                </div>
+            </div>
+        </div>
+        <section>
+                <div class="modal fade" id="modalModulos" tabindex="-1" role="dialog"
+                     aria-labelledby="moduloModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="motivoModalLabel" >Listado de Modulos</h5>                                
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div th:if="${modulos != null and !modulos.empty}">
+                                    <table class="table" id="TablaModulos">
+                                        <thead>
+                                            <tr>
+                                                <th>Módulo</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item:${modulos}">
+                                                <td th:text="${item.nombreModulo}"></td>
+                                                <td>
+                                                    <a href="#" th:onclick="seleccionar([[${item.idModulo}]],[[${item.nombreModulo}]])">Seleccionar</a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div th:if="${modulos == null or modulos.empty}">
+                                    No hay modulos en la base de datos
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button id="btnCerrar" type="button" class="btn btn-primary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                            </div>                            
+                        </div>
+
+                    </div>
+
+
+                </div> <!--FIN MODAL-->
+            </section>
+        
+        <script type="text/javascript">
+            function seleccionar(id, nombre) {
+                $("#IdModulo").val(id);
+                $("#NombreModulo").val(nombre);
+                $("#btnCerrar").click();
+            }
+
+            $(document).ready(function () {
+                $("#TablaModulos").DataTable({
+                    "ordering": false,
+                    "lengthMenu": [5, 10, 15],
+                    "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                })
+            })
+
+        </script>
+    </body>
+</html>

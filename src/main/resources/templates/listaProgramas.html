@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Programas</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav"></header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Lista de programas</h1></div>
+                </div>
+                
+                <div th:if="${ msg != null and !msg.empty}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Mensaje:</strong> 
+                        <p th:text="${msg}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <span th:attr="msg=@{null}"></span>
+                    </div>
+                </div>
+                
+                <div class="row align-items-center">
+                    <form class="form" style="margin-top: 2%; margin-bottom: 2%" th:action="@{/filtrarProgramas}" method="post">
+                        <div class="input-group">
+                            <div class="col">
+                                <input type="text" name="txtTexto" 
+                                       placeholder="Ingrese un nombre de programa"
+                                       class="form-control" style="border-radius: 1%"
+                                       />
+                            </div>
+                            <div  class="col col-lg-2">
+                                <input style="width: 200px;border-radius: 1%"   type="submit" name="btnBuscar" value="Buscar" class="btn btn-warning mx-auto" />
+                            </div>
+                            <div  class="col col-lg-2">
+                                <a style="width: 150px" class="btn btn-warning mx-auto" th:href="@{/nuevoPrograma}"><i class="fas fa-user-plus"></i>Nuevo</a>
+                            </div> 
+                        </div>
+                    </form>
+                </div>
+
+                
+
+
+                <div th:if="${programas != null and !programas.empty}">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+				<th>Programa</th>
+				<th>Horas diarias</th>
+                                <th>Hora inicial</th>
+                                <th>Hora final</th>
+                                <th>Estado</th>
+                                <th>Año</th>
+                                <th>Centro</th>
+                                <th>Grupo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="pro:${programas}">
+                                <td th:text="${pro.codigo}"></td>
+                                <td th:text="${pro.nombrePrograma}"></td>
+                                <td th:text="${pro.horasDia}"></td>
+                                <td th:text="${pro.horaInicio}"></td>
+                                <td th:text="${pro.horaFin}"></td>
+                                <td th:text="${pro.estado}"></td>
+                                <td th:text="${pro.anio}"></td>
+                                <td th:text="${pro.Centro.nombre}"></td>
+                                <td th:text="${pro.grupo}"></td>
+                                <td>
+                                    <a th:href="@{/editarPrograma/} + ${pro.idPrograma}">
+                                        <i class="fas fa-user-edit"></i> Editar</a> |
+                                    <a data-bs-toggle="modal" data-bs-target="#modalEliminar" 
+                                        th:href="@{/deleteProg/(idPrograma=${pro.idPrograma})}"
+                                        id="deleteButton">
+                                        <i class="fas fa-user-times"></i> Eliminar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div th:if="${programas == null or programas.empty}">
+                    No hay programas que mostrar
+                </div>
+            </div>
+        </div>
+        <section>
+            <div class="modal" tabindex="-1" id="modalEliminar" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">¿Esta seguro de eliminar?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+                            <a  href="" id="delRef" class="btn btn-primary">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.table #deleteButton').on('click', function (event) {
+                    event.preventDefault();
+                    var href = $(this).attr('href');
+                    $('#modalEliminar #delRef').attr('href', href);
+                    $('#modalEliminar').modal();
+
+                });
+            });
+
+        </script>
+
+    </body>
+
+</html>

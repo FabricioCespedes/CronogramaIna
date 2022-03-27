@@ -44,7 +44,6 @@ public class Modulo implements Serializable {
     private Modulo modulo;
     
     @Column(name = "HORAS_TOTALES")
-    @NotEmpty(message="Las horas totales del módulo son obligatorias")
     private int horasTotales;
     
     //Relacion de un modulo a muchas asignaciones de programa

@@ -9,8 +9,8 @@ import java.util.List;
 
 
 public interface IUsuarioService {
-    public void guardar (Usuario profesor);    
-    public void eliminar(Usuario profesor);
+    public int guardar (Usuario profesor);    
+    public int eliminar(Usuario profesor);
     public List<Usuario> listar();
     public List<Usuario> listar(String nombre);
     public Usuario obtenerUsuario(Long idUsuario);

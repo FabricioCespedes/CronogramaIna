@@ -45,7 +45,7 @@ public class ProgramaService implements IProgramaService{
     }
 
     @Override
-    public Programa obtenerModulo(Integer idPrograma) {
+    public Programa obtenerPrograma(Integer idPrograma) {
 
             return programaDao.findById(idPrograma).orElse(null);
 

@@ -17,13 +17,25 @@ public class UsuarioService implements IUsuarioService {
     private IUsuarioDao usuarioDao;
     
     @Override
-    public void guardar(Usuario usuario) {
-        usuarioDao.save(usuario);
+    public int guardar(Usuario usuario) {
+        int resultado = 1;
+        try {
+            usuarioDao.save(usuario);
+        } catch (Exception e) {
+            resultado = 0;
+        }
+        return resultado;
     }
 
     @Override
-    public void eliminar(Usuario usuario) {
-        usuarioDao.delete(usuario);
+    public int eliminar(Usuario usuario) {
+        int resultado = 1;
+        try {
+                   usuarioDao.delete(usuario);
+        } catch (Exception e) {
+            resultado = 0;
+        }
+        return resultado;
     }
 
     @Override

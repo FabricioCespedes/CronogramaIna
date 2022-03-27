@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ina.ProyectoJavaFabricioJose.dao.IFeriadoDao;
-import java.util.Date;
+
 
 @Service
 public class FeriadoService implements IFeriadoService {
@@ -55,11 +55,10 @@ public class FeriadoService implements IFeriadoService {
     public DiaFeriado obtenerFeriado(int idDia) {
         return feriadoDao.getById(idDia);
     }
+
+
     
-    @Override
-    public List<DiaFeriado> motivoRepetido(int idMotivo) {
-        return  (List<DiaFeriado>) feriadoDao.motivoRepetido(idMotivo);
-    }
+
     
 
 

@@ -18,5 +18,8 @@ public interface IFeriadoService {
     public List<DiaFeriado> listar();
     public List<DiaFeriado> listar(String anio);
     public DiaFeriado obtenerFeriado(int dia);
-    public List<DiaFeriado> motivoRepetido(int idMotivo);
+    
+    //Validar que no este un motivo 2 veces en un año
+    //
+    
 }

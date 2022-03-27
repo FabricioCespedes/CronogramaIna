@@ -17,7 +17,7 @@ public interface IProgramaService {
     public void eliminar(Programa programa);
     public List<Programa> listar();
     public List<Programa> listar(String nombrePrograma);
-    public Programa obtenerModulo(Integer idPrograma);
+    public Programa obtenerPrograma(Integer idPrograma);
     public List<Programa> listarProgramasConCronogramas();
     
 }

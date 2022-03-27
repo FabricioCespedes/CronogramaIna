@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Informacion del programa</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Datos del programa</h1></div>
+                </div>
+                <div class="row">
+                    <form th:action="@{/guardarPrograma}" method="post" th:object="${programa}">
+                        
+                        <div class="form-group">
+                            <label for="codigo" class="form-label">Código del programa:</label>
+                            <input type="text" name="codigo" class="form-control" th:field="*{codigo}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('codigo')}"
+                                  th:errors="*{codigo}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nombrePrograma" class="form-label">Nombre del programa:</label>
+                            <input type="text" name="nombrePrograma" class="form-control" th:field="*{nombrePrograma}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('nombrePrograma')}"
+                                  th:errors="*{nombrePrograma}"></span>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label for="horaInicio" class="form-label">Hora inicial:</label>
+                            <input type="text" name="horaInicio" class="form-control" th:field="*{horaInicio}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('horaInicio')}"
+                                  th:errors="*{horaInicio}"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="horaFin" class="form-label">Hora final:</label>
+                            <input type="text" name="horaFin" class="form-control" th:field="*{horaFin}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('horaFin')}"
+                                  th:errors="*{horaFin}"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <select class="form-select" aria-label="Default select example" name="estado" th:field="*{estado}">
+                                <option value="Activo">Activo</option>
+                                <option value="Eliminado">Eliminado</option>
+                            </select>
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('estado')}"
+                                  th:errors="*{estado}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="anio" class="form-label">Año:</label>
+                            <input type="number" name="anio" class="form-control" th:field="*{anio}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('anio')}"
+                                  th:errors="*{anio}"></span>
+                        </div>
+
+                        <input type="hidden" id="IdCentro" name="idCentro" th:field="*{centro.idCentro}"/>
+
+                        <div class="form-group">
+                            <label for="centro" class="form-label">Centro:</label>
+                            <div class="input-group mb-3">
+                                <a id="btnBuscarCentro" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalCentros"><i class="fas fa-search"></i>Buscar Centro</a>
+                                <input required="true" id="NombreCentro" type="text" name="nombreCentro" th:field="*{centro.nombre}" 
+                                       readonly="true" class="form-control"/>   
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grupo" class="form-label">Grupo:</label>
+                            <input type="number" name="grupo" class="form-control" th:field="*{grupo}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('grupo')}"
+                                  th:errors="*{grupo}"></span>
+                        </div>
+
+                        <div class="mt-2">
+                            <input type="submit" name="btnGuardar" class="btn btn-primary" value="Guardar"/>
+                            <a th:href="@{/programas}" class="btn btn-warning">Regresar</a>
+                        </div>
+
+                    </form>    
+                </div>
+            </div>
+        </div>
+        <section>
+            <div class="modal fade" id="modalCentros" tabindex="-1" role="dialog"
+                 aria-labelledby="centroModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="motivoModalLabel" >Listado de Centros</h5>                                
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div th:if="${centros != null and !centros.empty}">
+                                <table class="table" id="TablaCentros">
+                                    <thead>
+                                        <tr>
+                                            <th>Centro</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item:${centros}">
+                                            <td th:text="${item.nombre}"></td>
+                                            <td>
+                                                <a href="#" th:onclick="seleccionar([[${item.idCentro}]],[[${item.nombre}]])">Seleccionar</a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div th:if="${centros == null or centros.empty}">
+                                No hay centros en la base de datos
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btnCerrar" type="button" class="btn btn-primary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                        </div>                            
+                    </div>
+
+                </div>
+
+
+            </div> <!--FIN MODAL-->
+        </section>
+
+        <script type="text/javascript">
+            function seleccionar(id, nombre) {
+                $("#IdCentro").val(id);
+                $("#NombreCentro").val(nombre);
+                $("#btnCerrar").click();
+            }
+
+            $(document).ready(function () {
+                $("#TablaCentros").DataTable({
+                    "ordering": false,
+                    "lengthMenu": [5, 10, 15],
+                    "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                })
+            })
+        </script>
+    </body>
+</html>
+

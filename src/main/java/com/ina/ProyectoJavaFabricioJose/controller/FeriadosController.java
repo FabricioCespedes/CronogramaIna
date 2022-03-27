@@ -61,15 +61,13 @@ public class FeriadosController {
     public String guardar(@Valid DiaFeriado feriado, RedirectAttributes redir) {
         String msg = "";
 
-        if (feriadoService.motivoRepetido(feriado.getMotivo().getIdMotivo()).isEmpty()) {
+        
             if (feriadoService.guardar(feriado) != 0) {
                 msg = "Día feriado insertado";
             } else {
                 msg = "No se pudo insertar el día feriado";
             }
-        } else {
-            msg = "No se pudo insertar, ya existe ese motivo para esa año";
-        }
+      
 
         redir.addFlashAttribute("msg", msg);
 

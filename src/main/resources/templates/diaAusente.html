@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Dia Ausecente</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Datos de dia ausente</h1></div>
+                </div>
+                <div class="row">
+                    <form th:action="@{/guardarAusencia}" method="post" th:object="${diaAusente}">
+                        <input type="hidden" name="idDiaAusente" th:field="*{idDiaAusente}"/>
+
+
+                        <div class="form-group">
+                            <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
+                            <input type="date" name="fechaInicio" class="form-control" th:field="*{fechaInicio}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('fechaInicio')}"
+                                  th:errors="*{fechaInicio}"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fechaFin" class="form-label">Fecha de Fin:</label>
+                            <input type="date" name="fechaFin" class="form-control" th:field="*{fechaFin}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('fechaFin')}"
+                                  th:errors="*{fechaFin}"></span>
+                        </div>
+
+                        <input type="hidden" id="idProfesor" name="idProfesor" th:field="*{profesor.idProfesor}"/>
+
+                        <div class="form-group">
+                            <label for="nombre" class="form-label">Profesor:</label>
+                            <div class="input-group mb-3">
+                                <a id="btnBuscarProfesor" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalProfesores"><i class="fas fa-search"></i>Buscar Profesor</a>
+                                <input required="true" id="NombreCom" type="text" name="descripcion" th:field="*{profesor.nombre}" 
+                                       readonly="true" class="form-control"/>   
+                            </div>
+
+                        </div>
+                        
+                        <input type="hidden" id="IdMotivo" name="idMotivo" th:field="*{motivo.IdMotivo}"/>
+                        
+                        <div class="form-group">
+                            <label for="justificacion" class="form-label">Justificación:</label>
+                            <div class="input-group mb-3">
+                                <a id="btnBuscarMotivo" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalMotivos"><i class="fas fa-search"></i>Buscar Motivo</a>
+                                <input required="true" id="Justificacion" type="text" name="descripcion" th:field="*{motivo.justificacion}" 
+                                       readonly="true" class="form-control"/>   
+                            </div>
+
+                        </div>
+                        
+                        
+
+                        <div class="mt-2">
+                            <input type="submit" name="btnGuardar" class="btn btn-warning" value="Guardar"/>
+                            <a th:href="@{/diasAusentes}" class="btn btn-warning">Regresar</a>
+                        </div>
+
+                    </form>    
+                </div>
+            </div>
+        </div>
+        
+        <section>
+                <div class="modal fade" id="modalProfesores" tabindex="-1" role="dialog"
+                     aria-labelledby="profesorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="profesorModalLabel" >Listado de Profesores</h5>                                
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                
+                            </div>
+                            <div class="modal-body">
+                                <div th:if="${profesores != null and !profesores.empty}">
+                                    <table class="table" id="TablaProfesores">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>P. Apellido</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item:${profesores}">
+                                                <td th:text="${item.nombre}"></td>
+                                                <td th:text="${item.apellido1}"></td>
+                                                <td>
+                                                    <a href="#" th:onclick="seleccionarPro([[${item.idProfesor}]],[[${item.nombre}]])">Seleccionar</a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div th:if="${profesores == null or profesores.empty}">
+                                    No hay profesores en la base de datos
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button id="btnCerrar" type="button" class="btn btn-primary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                            </div>                            
+                        </div>
+
+                    </div>
+
+
+                </div> <!--FIN MODAL-->
+            </section>
+        
+        <script type="text/javascript">
+            function seleccionarPro(id, nombre) {
+                $("#idProfesor").val(id);
+                $("#NombreCom").val(nombre);
+                $("#btnCerrar").click();
+            }
+
+            $(document).ready(function () {
+                $("#TablaProfesores").DataTable({
+                    "ordering": false,
+                    "lengthMenu": [5, 10, 15],
+                    "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                })
+            })
+
+        </script>
+        
+        
+        <section>
+                <div class="modal fade" id="modalMotivos" tabindex="-1" role="dialog"
+                     aria-labelledby="motivoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="motivoModalLabel" >Listado de Motivos</h5>                                
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                
+                            </div>
+                            <div class="modal-body">
+                                <div th:if="${motivos != null and !motivos.empty}">
+                                    <table class="table" id="TablaMotivos">
+                                        <thead>
+                                            <tr>
+                                                <th>Motivo</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item:${motivos}">
+                                                <td th:text="${item.justificacion}"></td>
+                                                <td>
+                                                    <a href="#" th:onclick="seleccionarMot([[${item.idMotivo}]],[[${item.justificacion}]])">Seleccionar</a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div th:if="${motivos == null or motivos.empty}">
+                                    No hay motivos en la base de datos
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button id="btnCerrarMot" type="button" class="btn btn-primary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                            </div>                            
+                        </div>
+
+                    </div>
+
+
+                </div> <!--FIN MODAL-->
+            </section>
+        
+        <script type="text/javascript">
+            function seleccionarMot(id, nombre) {
+                $("#IdMotivo").val(id);
+                $("#Justificacion").val(nombre);
+                $("#btnCerrarMot").click();
+            }
+
+            $(document).ready(function () {
+                $("#TablaMotivos").DataTable({
+                    "ordering": false,
+                    "lengthMenu": [5, 10, 15],
+                    "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                })
+            })
+
+        </script>
+        
+    </body>
+    
+</html>

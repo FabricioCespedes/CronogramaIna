@@ -48,7 +48,7 @@ public class PCronograma implements Serializable {
 
     private String estado;
     
-    private Date fechaInicio;
+    private String fechaInicio;
 
     private boolean lunes;
 

@@ -34,7 +34,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
 
                 <form th:action="@{/guardarModulo}"  method="post" th:object="${pCronograma}">
-                    <input  type="hidden" class="form-control" name="idProfesor" th:field="*{idPrograma}" />
+                    <input  type="text" class="form-control" name="idPrgroama" th:field="*{idPrograma}" />
                     <input  type="text" class="form-control" th:field="*{fechaInicio}" readonly="true" />
 
                     <div class="card border-0 bg-light" style="margin-top: 2%" >

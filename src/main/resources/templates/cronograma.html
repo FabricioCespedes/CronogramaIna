@@ -30,13 +30,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                 </div>
 
-                <form th:action="@{/seleccionarCronograma}"  method="post" th:object="${cronograma}">
+                <form th:action="@{/seleccionarCronograma}"  method="post" th:object="${programaFecha}">
                     <div class="card border-0 bg-light" style="margin-top: 2%" >
                         <div class="card-header"> <h5>Seleccione un programa</h5></div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-2">
                                     <input type="hidden" id="IdPrograma" name="idPrograma" th:field="*{programa.idPrograma}"/>
+                                    <input type="hidden" id="IdPrograma2" th:field="*{idPro}"/>
 
                                     <label for="codigo" class="form-label">Código de referencia</label>
                                     <input id="Codigo" type="text" class="form-control" name="codigo" th:field="*{programa.codigo}" readonly="true" />
@@ -77,9 +78,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                         <div class="col-3">
                             <div th:if="${ programa != null}">
-                                <a th:href="@{/agregarModulo/}+ ${programa.idPrograma}"  class="btn btn-warning w-100">Añadir modulo</a>    
-                            </div> 
 
+                                <a th:href="@{/agregarModulo(idPro=${programaFecha.idPro}, fecha=${programaFecha.fechaInicio}) }"  class="btn btn-warning w-100">Añadir modulo</a>                                </div>
                         </div>
 
 
@@ -216,6 +216,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <script type="text/javascript">
                     function seleccionar(id, codigo, nombre) {
                         $("#IdPrograma").val(id);
+                        $("#IdPrograma2").val(id);
                         $("#Codigo").val(codigo);
                         $("#namePro").val(nombre);
                         $("#btnCerrar").click();

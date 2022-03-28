@@ -7,35 +7,31 @@ package com.ina.ProyectoJavaFabricioJose.services;
 import com.ina.ProyectoJavaFabricioJose.dao.ICronogramaDao;
 import com.ina.ProyectoJavaFabricioJose.domain.Cronograma;
 import com.ina.ProyectoJavaFabricioJose.domain.Programa;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service
-public class CronogramaService implements ICronogramaService{
+public class CronogramaService implements ICronogramaService {
 
     @Autowired
     private ICronogramaDao cronogramaDao;
-   
 
     @Override
     public List<Cronograma> listarCronogramas(Integer idPrograma) {
-            List<Cronograma> lista = (List<Cronograma>) cronogramaDao.listar(idPrograma);
-            return lista;       
+        List<Cronograma> lista = (List<Cronograma>) cronogramaDao.listar(idPrograma);
+        return lista;
     }
-    
-    
-
 
     @Override
     public Cronograma obtenerCronograma(Integer idCronograma) {
         return cronogramaDao.findById(idCronograma).orElse(null);
     }
-
-
-
 
     @Override
     public int eliminar(Integer idCronograma) {
@@ -50,10 +46,10 @@ public class CronogramaService implements ICronogramaService{
     }
 
     @Override
-    public int ingresarDias(boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, Integer idModulo, Integer idPrograma, int retorno) {
+    public int ingresarDias(boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, int idModulo, int idPrograma) {
         int resultado = -1;
         try {
-           resultado = cronogramaDao.ingresarDias((lunes ? 1 : 0), (martes ? 1 : 0), (miercoles ? 1 : 0), (jueves ? 1 : 0), (viernes ? 1 : 0), (sabado ? 1 : 0), idModulo, idPrograma, retorno);
+            resultado = cronogramaDao.ingresarDias(lunes, martes, miercoles, jueves, viernes, sabado, idModulo, idPrograma);
         } catch (Exception e) {
             resultado = 1;
         }
@@ -62,18 +58,19 @@ public class CronogramaService implements ICronogramaService{
     }
 
     @Override
-    public String guardar(Integer idModulo, Integer idPrograma, Long idProfesor, double horasDia, String horaInicio, String horaFin, String estado, Integer idCentro, Date fechaInicio) {
+    public String guardar(Integer idModulo, Integer idPrograma, Long idProfesor, double horasDia, String horaInicio, String horaFin, String estado, Integer idCentro, String fechaInicio) {
         String fechaInicioR;
         try {
-           return cronogramaDao.generarCronograma(idModulo, idPrograma, horasDia, horaInicio, horaFin, estado, idCentro, fechaInicio);
-                   
+            DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha = fechaHora.parse(fechaInicio);
+            return cronogramaDao.generarCronograma(idModulo, idPrograma, idProfesor, horasDia, horaInicio, horaFin, estado, idCentro, fecha);
+
         } catch (Exception e) {
-          fechaInicioR ="0";
+            fechaInicioR = "0";
         }
 
         return fechaInicioR;
-        
+
     }
-    
-    
+
 }

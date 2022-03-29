@@ -55,7 +55,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario login(long username, String contrasenia) {
-        return usuarioDao.findByIdUsuarioAndContrasenia(username, contrasenia);
+        return usuarioDao.findByCedulaAndContrasenia(username, contrasenia);
     }
     
 }

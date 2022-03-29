@@ -17,8 +17,16 @@ public class CentroService implements ICentroService {
     private ICentroDao centroDao;
     
     @Override
-    public void guardar(Centro centro) {
-        centroDao.save(centro);
+    public int guardar(Centro centro) {
+        int result;
+        try {
+            centroDao.save(centro);
+            result = 1;
+        } catch (Exception e) {
+            result = 0;
+        }
+        
+        return result;
     }
 
     @Override
@@ -39,6 +47,16 @@ public class CentroService implements ICentroService {
     @Override
     public Centro obtenerCentro(int idCentro) {
         return centroDao.findById(idCentro).orElse(null);
+    }
+
+    @Override
+    public List<Centro> verificarRuta(String ubicacion) {
+        return (List<Centro>) centroDao.findByUbicacion(ubicacion);
+    }
+
+    @Override
+    public List<Centro> verificarNombre(String nombre) {
+        return (List<Centro>) centroDao.findByNombre(nombre);
     }
     
 }

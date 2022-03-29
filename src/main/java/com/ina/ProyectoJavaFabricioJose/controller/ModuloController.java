@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -50,11 +51,13 @@ public class ModuloController {
     @PostMapping("/guardarModulo")
     public String guardar(@Valid Modulo modulo, RedirectAttributes redir) {
         String msg = "";
-
-        moduloService.guardar(modulo);
-
-        msg = "modulo insertado insertado";
-
+        
+        if (moduloService.guardar(modulo) == 1) {
+            msg = "Módulo insertado insertado";
+        }else{
+            msg = "El módulo no se pudo insertar insertar";
+        }
+        
         redir.addFlashAttribute("msg", msg);
 
         return "redirect:/modulos";

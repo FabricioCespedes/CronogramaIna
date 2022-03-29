@@ -11,4 +11,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ICentroDao extends JpaRepository<Centro, Integer> {
     public Iterable<Centro> findByNombreContains(String nombre);
+    
+     public Iterable<Centro> findByNombre(String nombre);
+    
+    public Iterable<Centro> findByUbicacion(String ubicacion);
+    
 }

@@ -87,10 +87,16 @@ public class ProfesorController {
     }
 
     @RequestMapping(value = "/deletePro", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
-    public String eliminar(Long idProfesor, Model model) {
+    public String eliminar(Long idProfesor, Model model, RedirectAttributes redir) {
+        String msg = "Usuario eliminado";
         Profesor profesor = profesorService.obtenerProfesor(idProfesor);
         model.addAttribute("profesor", profesor);
-        profesorService.eliminar(profesor);
+        if (profesorService.eliminar(profesor) != 1) {
+            msg = "No se pudo eliminar el usuario";
+        }
+        
+        redir.addFlashAttribute("msg", msg);
+        
         return "redirect:/profesores";
     }
 }

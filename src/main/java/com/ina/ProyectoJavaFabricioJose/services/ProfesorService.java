@@ -29,11 +29,9 @@ public class ProfesorService implements IProfesorService {
 
     @Override
     public int eliminar(Profesor profesor) {
-
-        profesorDao.deleteById(profesor.getIdProfesor());
         int resultado = 1;
         try {
-            
+            profesorDao.deleteById(profesor.getIdProfesor());
         } catch (Exception e) {
             resultado = 0;
         }

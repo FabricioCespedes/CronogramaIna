@@ -56,15 +56,20 @@ public class CentroController {
     public String guardar(@Valid Centro centro, RedirectAttributes redir) {
         String msg = "";
         
-        
-        centroService.guardar(centro);
-        
-        msg = "Centro insertado";
-        
-        
-
+        if (centroService.verificarNombre(centro.getNombre()).size() < 1) {
+            if (centroService.verificarRuta(centro.getUbicacion()).size() < 1) {
+                if (centroService.guardar(centro) == 1) {
+                    msg = "Centro insertado";
+                }else{
+                    msg = "El centro no se pudo insertar";
+                }
+            }else{
+                msg = "El centro no se pudo insertar porque ya hay un centro con esa ubicación";
+            }
+        }else{
+            msg = "El centro no se pudo insertar porque ya hay un centro con esa ubicación";
+        }
         redir.addFlashAttribute("msg", msg);
-
         return "redirect:/centros";
     }
     

@@ -50,7 +50,7 @@ public class DiaAusenteController {
 
     @PostMapping("/filtrarAusentes")
     public String filtar(Profesor profesor, Model model, RedirectAttributes redir) {
-        
+
         List<DiaAusente> lista = diaAusenteService.listar(profesor.getIdProfesor());
         List<Profesor> listaPro = profesorService.listar();
         Profesor profesor2 = profesorService.obtenerProfesor(profesor.getIdProfesor());
@@ -81,11 +81,15 @@ public class DiaAusenteController {
     @PostMapping("/guardarAusencia")
     public String guardar(@Valid DiaAusente diaAusente, RedirectAttributes redir) {
         String msg = "";
-
-        if (diaAusenteService.guardar(diaAusente) != 0) {
-            msg = "Día de ausencia insertado";
-        } else {
-            msg = "No se pudo insertar la fecha de ausencia";
+        
+        if (diaAusente.getFechaInicio().before(diaAusente.getFechaFin())) {
+            if (diaAusenteService.guardar(diaAusente) != 0) {
+                msg = "Día de ausencia insertado";
+            } else {
+                msg = "No se pudo insertar la fecha de ausencia";
+            }
+        }else {
+            msg = "No se pudo insertar la fecha de ausencia porque la fecha de fin es primero que la fecha inicial";
         }
 
         redir.addFlashAttribute("msg", msg);

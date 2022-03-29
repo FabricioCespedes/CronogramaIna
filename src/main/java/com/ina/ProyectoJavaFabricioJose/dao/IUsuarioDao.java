@@ -13,8 +13,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface IUsuarioDao extends JpaRepository<Usuario, Long> {
     
     public Iterable<Usuario> findByNombreContains(String nombre);
-    
-    public Usuario findByIdUsuarioAndContrasenia(long idUsuario, String contrasenia);
+     
+    public Usuario findByCedulaAndContrasenia(long idUsuario, String contrasenia);
     
     
 }

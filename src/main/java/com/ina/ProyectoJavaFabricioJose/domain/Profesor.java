@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -27,6 +27,9 @@ public class Profesor implements Serializable{
     @Id
     @Column(name="ID_PROFESOR")
     private Long idProfesor;
+    
+    @Column(name="CEDULA")
+    private Long cedula;
     
     @Column(name = "NOMBRE_PROFESOR")
     @NotEmpty(message="El Nombre del profesor es obligatorio")

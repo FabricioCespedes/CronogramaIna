@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IProgramaService {
     
-    public void guardar (Programa programa);    
+    public int guardar (Programa programa);    
     public void eliminar(Programa programa);
     public List<Programa> listar();
     public List<Programa> listar(String nombrePrograma);

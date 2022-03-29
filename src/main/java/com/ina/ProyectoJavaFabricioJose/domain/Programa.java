@@ -33,7 +33,7 @@ public class Programa implements Serializable {
     private int idPrograma;
     
     
-    @Column(name = "CODIGO", unique = true)
+    @Column(name = "CODIGO")
     @NotEmpty(message="El código del programa es obligatorio")
     private String codigo;
     

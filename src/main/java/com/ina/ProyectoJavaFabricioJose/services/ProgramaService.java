@@ -17,9 +17,15 @@ public class ProgramaService implements IProgramaService{
     private IProgramaDao programaDao;
 
     @Override
-    public void guardar(Programa programa) {
-
+    public int guardar(Programa programa) {
+        int result;
+        try {
             programaDao.save(programa);
+            result = 1;
+        } catch (Exception e) {
+            result = 0;
+        }
+            return result;
 
     }
 

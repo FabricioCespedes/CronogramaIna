@@ -5,11 +5,12 @@
 package com.ina.ProyectoJavaFabricioJose.dao;
 
 import com.ina.ProyectoJavaFabricioJose.domain.Profesor;
+import javax.persistence.TypedQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 
 public interface IProfesorDao extends JpaRepository<Profesor, Long> {
     
     public Iterable<Profesor> findByNombreContains(String nombre);
-    
 }

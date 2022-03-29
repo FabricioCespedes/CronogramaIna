@@ -16,7 +16,8 @@
                 </div>
                 <div class="row">
                     <form th:action="@{/guardarPrograma}" method="post" th:object="${programa}">
-                        
+                        <input type="hidden" name="idPrograma" th:field="*{idPrograma}"/>
+
                         <div class="form-group">
                             <label for="codigo" class="form-label">Código del programa:</label>
                             <input type="text" name="codigo" class="form-control" th:field="*{codigo}" />
@@ -32,8 +33,8 @@
                                   th:if="${#fields.hasErrors('nombrePrograma')}"
                                   th:errors="*{nombrePrograma}"></span>
                         </div>
-                        
-                        
+
+
                         <div class="form-group">
                             <label for="horaInicio" class="form-label">Hora inicial:</label>
                             <input type="text" name="horaInicio" class="form-control" th:field="*{horaInicio}" />
@@ -41,7 +42,7 @@
                                   th:if="${#fields.hasErrors('horaInicio')}"
                                   th:errors="*{horaInicio}"></span>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="horaFin" class="form-label">Hora final:</label>
                             <input type="text" name="horaFin" class="form-control" th:field="*{horaFin}" />
@@ -49,7 +50,7 @@
                                   th:if="${#fields.hasErrors('horaFin')}"
                                   th:errors="*{horaFin}"></span>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="estado" class="form-label">Estado:</label>
                             <select class="form-select" aria-label="Default select example" name="estado" th:field="*{estado}">

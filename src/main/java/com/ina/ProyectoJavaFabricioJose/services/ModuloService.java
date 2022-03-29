@@ -17,10 +17,15 @@ public class ModuloService implements IModuloService {
     private IModuloDao moduloDao;
 
     @Override
-    public void guardar(Modulo modulo) {
-
+    public int guardar(Modulo modulo) {
+        int result;
+        try {
             moduloDao.save(modulo);
-
+            result = 1;
+        } catch (Exception e) {
+            result = 0;
+        }
+        return result;
     }
 
     @Override
@@ -38,8 +43,8 @@ public class ModuloService implements IModuloService {
     }
 
     @Override
-    public List<Modulo> listar(String nombreModulo) {
-            return (List<Modulo>) moduloDao.findByNombreModuloContains(nombreModulo);
+    public List<Modulo> listar(String codigo) {
+            return (List<Modulo>) moduloDao.findByCodigoContains(codigo);
 
     }
 

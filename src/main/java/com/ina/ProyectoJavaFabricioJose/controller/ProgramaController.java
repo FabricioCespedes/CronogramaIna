@@ -71,11 +71,16 @@ public class ProgramaController {
         diff = d2.getTime() - d1.getTime();
 
         programa.setHorasDia(diff / (60 * 60 * 1000));
-
-        programaService.guardar(programa);
-
-        msg = "Programa insertado";
-
+        
+        if(programa.getHorasDia()<6){
+            if(programaService.guardar(programa) == 1){
+                msg = "Programa insertado";
+            }else{
+                msg = "El programa no se pudo insertar";
+            }
+        }else{
+            msg = "El programa no se pudo insertar porque tiene 6 o más hora diarias";
+        }
         redir.addFlashAttribute("msg", msg);
 
         return "redirect:/programas";

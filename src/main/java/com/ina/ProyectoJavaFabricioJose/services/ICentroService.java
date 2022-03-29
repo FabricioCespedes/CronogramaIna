@@ -9,9 +9,11 @@ import java.util.List;
 
 
 public interface ICentroService {
-    public void guardar (Centro centro);    
+    public int guardar (Centro centro);    
     public void eliminar(Integer idCentro);
     public List<Centro> listar();
     public List<Centro> listar(String nombre);
     public Centro obtenerCentro(int idCentro);
+    public List<Centro> verificarNombre(String nombre);
+    public List<Centro> verificarRuta(String ubicacion);
 }

@@ -13,10 +13,10 @@ import java.util.List;
  */
 public interface IModuloService {
     
-    public void guardar (Modulo modulo);    
+    public int guardar (Modulo modulo);    
     public void eliminar(Modulo modulo);
     public List<Modulo> listar();
-    public List<Modulo> listar(String nombreModulo);
+    public List<Modulo> listar(String codigo);
     public Modulo obtenerModulo(Integer idModulo);
     
 }

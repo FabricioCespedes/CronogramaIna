@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface IModuloDao extends JpaRepository<Modulo, Integer> {
     
     
-    public Iterable<Modulo> findByNombreModuloContains(String nombreModulo);
+    public Iterable<Modulo> findByCodigoContains(String codigo);
     
 }

@@ -27,7 +27,7 @@ public class FeriadosController {
     private IMotivoService motivoService;
 
     @GetMapping("/feriados")
-    public String listaCliente(String txtTexto, Model model) {
+    public String listaFeriados(String txtTexto, Model model) {
 
         Calendar cal = Calendar.getInstance();
 

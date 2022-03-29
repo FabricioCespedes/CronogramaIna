@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,20 +26,26 @@ public class DiasAusentesColectivos implements Serializable {
     
     private static final long serialVersionUID=1L;
     
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_FECHA_COLECTIVO")
+    private int idDia;
+    
+    
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "FECHA_INICIO", unique = true)
     private Date fechaInicio;
     
-    @Id
+    
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "FECHA_FIN", unique = true)
     private Date fechaFin;
     
     //Relación de muchos días colectivos a un centro 
-    @Id
+    
     @JoinColumn(name = "ID_CENTRO", nullable = false)
     @ManyToOne(optional = false)
     private Centro centro;

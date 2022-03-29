@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml">
     <head th:replace="plantillas/plantilla1 ::head">
-        <title>Colectivos</title>
+        <title>Feriados</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -14,7 +14,7 @@
         <div class="container-lg p-20 bg-warning">
             <div class="container-lg" style="background-color: antiquewhite">
                 <div class="card border-0 bg-warning" style="margin-top: 2%" >
-                    <div class="card-header"> <h1>Lista de colectivos</h1></div>
+                    <div class="card-header"> <h1>Lista de feriados</h1></div>
                 </div>
 
                 <div th:if="${ msg != null and !msg.empty}">
@@ -35,7 +35,7 @@
                                        placeholder="Ingrese un año para buscar dias feriados" 
                                        class="form-control" style="border-radius: 1%"
                                        />
-                            </div>
+                            </div>  
                             <div  class="col col-lg-2">
                                 <input style="width: 200px;border-radius: 1%"   type="submit" name="btnBuscar" value="Buscar" class="btn btn-warning mx-auto" />
                             </div>

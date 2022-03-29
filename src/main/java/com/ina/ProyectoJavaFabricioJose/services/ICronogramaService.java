@@ -21,4 +21,6 @@ public interface ICronogramaService {
     public int eliminar(Integer idCronograma);
     
     public int ingresarDias(boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, int idModulo, int idPrograma);
+    
+    public Iterable<String> obtenerFechaInicio(int idPrograma);
 }

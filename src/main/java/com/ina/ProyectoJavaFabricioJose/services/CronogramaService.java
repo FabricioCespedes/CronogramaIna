@@ -73,4 +73,15 @@ public class CronogramaService implements ICronogramaService {
 
     }
 
+    @Override
+    public List<String> obtenerFechaInicio(int idPrograma) {
+        try {
+            return (List<String>) cronogramaDao.obtenerFechaInicio(idPrograma);
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+    }
+
 }

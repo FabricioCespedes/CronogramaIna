@@ -25,4 +25,7 @@ public class ProgramaFecha implements Serializable{
     private String fechaInicio;
     
     private Integer idPro;
+    
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private String fechaInicioM;
 }

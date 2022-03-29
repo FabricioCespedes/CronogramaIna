@@ -48,4 +48,6 @@ public interface ICronogramaDao extends JpaRepository<Cronograma, Integer> {
             @Param("ID_PROGRAMA") int idPrograma
     );
     
+    @Query(value = "SELECT CONVERT(varchar(10), FECHA_INICIO) FROM CRONOGRAMAS where ID_PROGRAMA =?1  ORDER BY  FECHA_INICIO ASC", nativeQuery = true)
+    public Iterable<String> obtenerFechaInicio(int idPrograma);
 }

@@ -89,12 +89,18 @@ public class CronogramaController {
         }
         List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
         Programa programa = programaService.obtenerPrograma(programaFecha.getPrograma().getIdPrograma());
+
+        List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(programaFecha.getIdPro());
+        if (!lista.isEmpty()) {
+            programaFecha.setFechaInicio(  lista.get(0));
+        }
         programaFecha.setPrograma(programa);
         model.addAttribute("cronogramas", cronogramas);
         model.addAttribute("programaFecha", programaFecha);
         redir.addFlashAttribute("cronogramas", cronogramas);
         redir.addFlashAttribute("programaFecha", programaFecha);
         redir.addFlashAttribute("programa", programa);
+        programaFecha.setFechaInicio(lista.get(0));
         redir.addFlashAttribute("msg", msg);
         return "redirect:/admCronograma";
     }
@@ -102,14 +108,15 @@ public class CronogramaController {
     @PostMapping("/guardarModulo")
     public String guardarModulo(@Valid PCronograma pCronograma, Errors er, Model model, RedirectAttributes redir) {
         String msg = "";
-        if (pCronograma.getIdModulo() == null || pCronograma.getIdPrograma() == null || pCronograma.getHoraInicio().isEmpty() || pCronograma.getHoraFin().isEmpty()) {
+        String fechaInicioR= "";
+        if (pCronograma.getIdModulo() == null || pCronograma.getIdPrograma() == null || pCronograma.getHoraInicio().isEmpty() || pCronograma.getHoraFin().isEmpty() || pCronograma.getHorasDia() == null) {
             msg = "Por favor, incluya todos los datos";
             redir.addFlashAttribute("msg", msg);
 
             pCronograma.setIdPrograma(pCronograma.getIdPrograma());
-            model.addAttribute("pCronograma", pCronograma);
-            model.addAttribute("modulos", moduloService.listar());
-            model.addAttribute("profesores", profesorService.listar());
+            redir.addFlashAttribute("pCronograma", pCronograma);
+            redir.addFlashAttribute("modulos", moduloService.listar());
+            redir.addFlashAttribute("profesores", profesorService.listar());
             return "redirect:/agregarModulo?idPro=" + pCronograma.getIdPrograma().toString() + "&fecha=" + pCronograma.getFechaInicio();
         }
         if (!pCronograma.isLunes() && !pCronograma.isMartes() && !pCronograma.isMiercoles() && !pCronograma.isJueves() && !pCronograma.isViernes() && !pCronograma.isSabado()) {
@@ -136,7 +143,7 @@ public class CronogramaController {
         if (cronogramaService.ingresarDias(pCronograma.isLunes(), pCronograma.isMartes(), pCronograma.isMiercoles(), pCronograma.isJueves(), pCronograma.isViernes(), pCronograma.isSabado(), (int) pCronograma.getIdModulo(), (int) pCronograma.getIdPrograma()) == 0) {
             Programa programa = programaService.obtenerPrograma(pCronograma.getIdPrograma());
 
-            String fechaInicioR = cronogramaService.guardar(pCronograma.getIdModulo(),
+                fechaInicioR = cronogramaService.guardar(pCronograma.getIdModulo(),
                     pCronograma.getIdPrograma(),
                     pCronograma.getIdProfesor(),
                     pCronograma.getHorasDia(),
@@ -168,6 +175,15 @@ public class CronogramaController {
             model.addAttribute("profesores", profesorService.listar());
             return "redirect:/agregarModulo?idPro=" + pCronograma.getIdPrograma().toString() + "&fecha=" + pCronograma.getFechaInicio();
         }
+        Programa programa = programaService.obtenerPrograma(pCronograma.getIdPrograma());
+        ProgramaFecha programaFecha = new ProgramaFecha();
+        programaFecha.setPrograma(programa);
+        programaFecha.setIdPro(pCronograma.getIdPrograma());
+        
+        List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(pCronograma.getIdPrograma());
+        programaFecha.setFechaInicio(lista.get(0));
+        programaFecha.setFechaInicioM(lista.get(0));
+        redir.addFlashAttribute("programaFecha", programaFecha);
 
         return "redirect:/admCronograma";
     }

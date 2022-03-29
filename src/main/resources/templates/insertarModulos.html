@@ -133,13 +133,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                                 <div class="row">
                                     <div class="col-3">
-                                        <label for="jornada" class="form-label">Tipo de jornada</label>
+                                        <label for="jornada" class="form-label">Horas por día</label>
                                         <div class="input-group mb-3">
-                                            <select name="jornada" th:field="*{horasDia}" class="form-control">
-                                                <option th:value="5.2">Diurna</option>
-                                                <option th:value="6.0" th:selected="true"
-                                                        >Mixta</option>
-                                            </select>
+                                            <input id="horaT" type="number" class="form-control" name="horaI" th:field="*{horasDia}"/>
                                         </div>                     
                                     </div>
                                     <div class="col-3">

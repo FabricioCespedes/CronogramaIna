@@ -18,5 +18,5 @@ public interface IModuloService {
     public List<Modulo> listar();
     public List<Modulo> listar(String nombreModulo);
     public Modulo obtenerModulo(Integer idModulo);
-    
+    public List<Modulo> listar(Integer idPrograma);
 }

@@ -49,4 +49,9 @@ public class ModuloService implements IModuloService {
 
     }
 
+    @Override
+    public List<Modulo> listar(Integer idPrograma) {
+            return (List<Modulo>) moduloDao.listarModulos(idPrograma);
+    }
+
 }

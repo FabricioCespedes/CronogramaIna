@@ -19,8 +19,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 
                 <div class="card border-0 bg-warning" style="margin-top: 2%" >
-                    <div class="card-header"> <h1>Insertar módulo al cronograma</h1>
-                        <h5>Ingrese los datos y precione guardar</h5>
+                    <div class="card-header"> <h1>Asignación de profesores a un módulo</h1>
                     </div>
                 </div>
 
@@ -33,83 +32,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                 </div>
 
-                <form th:action="@{/guardarModulo}"  method="post" th:object="${asignacionProfesor}">
-                    <div class="card border-0 bg-light" style="margin-top: 2%" >
-                        <div class="card-header"> <h5>Datos del módulo</h5></div>
-                        <div class="card-body">
-                            <input type="hidden" id="IdPrograma" name="idPrograma" th:field="*{programa.idPrograma}"/>
-                            <div class="row">
-                                <h5>Seleccione los datos del módulo</h5>
-                                <div class="col-10">
-                                    <label for="nombreModulo" class="form-label">Módulo</label>
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="nombreModulo" th:field="*{modulo.nombreModulo}" 
-                                               readonly="true" class="form-control"  id="nameMod" />
-                                    </div>
-                                </div>                             
-                                <div class="col-2">
-                                    <input type="hidden" id="IdModulo" name="idModulo" th:field="*{modulo.idModulo}"/>
-                                    <label for="codigo" class="form-label">Código de referencia</label>
-                                    <input id="Codigo" type="text" class="form-control" name="codigo" th:field="*{modulo.codigo}" readonly="true" />
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h5>Seleccione un profesor</h5>
-                            <div class="row">
-
-                                <div class="col-10">
-                                    <label for="nombreProfesor" class="form-label">Nombre del profesor</label>
-                                    <div class="input-group mb-3">
-                                        <a id="btnBuscar" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalProfesores"><i class="fas fa-search"></i>Buscar profesor</a>
-                                        <input required="true" type="text" name="nombreProfesor" th:field="*{nombreProfesor}" 
-                                               readonly="true" class="form-control"  id="nameP" placeholder="Precione buscar profesor"/>
-                                    </div>
-                                </div>    
-                                <div class="col-2">
-                                    <label for="idProfesor" class="form-label">Identificación</label>
-                                    <input id="IdProfesor" type="text" class="form-control" name="idProfesor" th:field="*{idProfesor}" readonly="true" />
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <h5>Ingrese los siguientes datos</h5>
-
-                                <div class="row">
-                                    <div class="col-3">
-                                        <label for="fecha" class="form-label">Fecha de inicio</label>
-                                        <input  type="date" class="form-control" name="fecha" th:field="*{fechaInicio}"  />                     
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="fecha" class="form-label">Fecha de final</label>
-                                        <input  type="date" class="form-control" name="fecha" th:field="*{fechaFin}"  />
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
 
 
-                        <div class="card-footer" > 
-                            <div class="row">
-                                <div class="col-6">
-                                    <a th:href="@{/admCronograma}" class="btn btn-warning w-100">Regresar</a>    
-                                </div>
-                                <div class="col-6">
-                                    <input type="submit" name="btnSeleccionar" class="btn btn-warning w-100" value="Agregar asignación"/>
-                                </div>
-                            </div>
 
-                        </div>
-
-                    </div>
-
-
-                </form>
 
                 <div th:if="${asignaciones != null and !asignaciones.empty}" class="card" style="margin-top: 2%">
                     <div class="card-header">
@@ -117,12 +42,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <table class="table" id="TablaCronograma">
                             <thead>
                                 <tr>
-                                    <th>Código</th>
-                                    <th>Módulo</th>
-                                    <th>Horas por día</th>
-                                    <th>Horas totales</th>
-                                    <th>Horario</th>
-                                    <th>Estado</th>
+                                    <th>Pro</th>
                                     <th>Fecha Inicio</th>
                                     <th>Fecha Fin</th>                                    
                                     <th>Acciones</th>
@@ -130,15 +50,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </thead>
                             <tbody>
                                 <tr th:each="item:${asignaciones}">
-                                    <td th:text="${item.profesor.nombre}"></td>
-                                    <td th:text="${item.modulo.nombreModulo}"></td>
-                                    <td th:text="${item.horasDia}"></td>
-                                    <td th:text="${item.modulo.horasTotales}"></td>
-                                    <td th:text="${item.horasInicio} + ' | '+${item.horaFin}"></td>
-                                    <td th:text="${item.estado}"></td>
+                                    <td th:text="${item.profesor.nombre + ' ' + item.profesor.apellido1}"></td>
                                     <td th:text="${item.fechaInicio}"></td>
                                     <td th:text="${item.fechaFin}"></td>
                                     <td>
+                                        <a th:href="@{/editarAsignacion(idAsignacionProfesor=${item.idAsignacionProfesor},  idCronograma=${idCronograma}   )}">
+                                            <i class="fas fa-user-edit"></i> Editar</a> |
+
+
 
 
 
@@ -152,84 +71,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                 </div>
 
-                <script type="text/javascript">
 
-                    function seleccionP(id, nombre, ape1, ape2) {
-                        $("#IdProfesor").val(id);
-                        $("#nameP").val(nombre);
-                        $("#btnCerrar2").click();
-                    }
-
-                    $(document).ready(function () {
-                        $("#TablaProfesores").DataTable({
-                            "ordering": false,
-                            "lengthMenu": [5, 10, 15],
-                            "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
-                        });
-                    });
-
-                </script>
-
-
-                <section>
-                    <div class="modal fade vh-100" id="modalProfesores" tabindex="-1" role="dialog"
-                         aria-labelledby="profesorModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl" role="document">
-                            <div class="modal-content" >
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="profesorModalLabel" >Listado de profesores</h5>                                
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                                </div>
-                                <div class="modal-body">
-                                    <div th:if="${profesores != null and !profesores.empty}">
-                                        <table class="table" id="TablaProfesores">
-                                            <thead>
-                                                <tr>
-
-                                                    <th>Identificación</th>
-                                                    <th>Nombre</th>
-                                                    <th>Primer apellido</th>
-                                                    <th>Segundo apellido</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr th:each="item:${profesores}">
-                                                    <td th:text="${item.idProfesor}"></td>
-                                                    <td th:text="${item.nombre}"></td>
-                                                    <td th:text="${item.apellido1}"></td>
-                                                    <td th:text="${item.apellido2}"></td>
-                                                    <td>
-                                                        <a href="#" th:onclick="seleccionP([[${item.idProfesor}]],[[${item.nombre}]],[[${item.apellido1}]],[[${item.apellido2}]] )">Seleccionar</a>
-                                                    </td>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div th:if="${profesores == null or profesores.empty}">
-                                        No hay profesores en la base de datos
-                                    </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button id="btnCerrar2" type="button" class="btn btn-primary"
-                                            data-bs-dismiss="modal">Cerrar</button>
-                                </div>                            
-                            </div>
-
-                        </div>
-
-
-                    </div> <!--FIN MODAL-->
-                </section>
-
-
-
-
-
+                <div class="row">
+                    <div class="col-6">
+                        <a th:href="@{/admCronograma}" class="btn btn-warning w-100">Regresar</a>    
+                    </div>
+                    <div class="col-6">
+                        <a th:href="@{/agregarProfesor(idCronograma=${idCronograma}}"  class="btn btn-warning w-100">Nueva asignación profesor</a>                            
+                    </div>
+                </div>
 
 
             </div>

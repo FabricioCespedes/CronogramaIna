@@ -12,6 +12,8 @@ import java.util.List;
  * @author Sergio
  */
 public interface IAsignacionProfesorService {
-    public List<AsignacionProfesor> listaPorModulos(int idModulo, int idPrograma);
-
+    public List<AsignacionProfesor> listar(int idModulo, int idPrograma);
+    public int guardar(AsignacionProfesor asignacionProfesor);
+    public int eliminar(Integer idAsignacionProfesor);
+    public AsignacionProfesor obtener(Integer idAsignacionProfesor);
 }

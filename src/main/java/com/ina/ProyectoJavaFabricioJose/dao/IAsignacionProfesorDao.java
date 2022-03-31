@@ -15,5 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface IAsignacionProfesorDao extends JpaRepository<AsignacionProfesor, Integer>{
     
     @Query(value = "select * from ASIGNACION_PROFESOR where ID_MODULO=?1 and ID_PROGRAMA=?2", nativeQuery = true)
-    public Iterable<AsignacionProfesor> listaPorModulos(int idModulo, int idPrograma);
+    public Iterable<AsignacionProfesor> listaPorModulos(Integer idModulo, Integer idPrograma);
+    
+    
 }

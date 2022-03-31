@@ -279,4 +279,66 @@ public class CronogramaController {
         return "redirect:/admCronograma";
     }
 
+    @GetMapping(value = "/profesoresModulos")
+    public String asignarProfesor(@RequestParam int idCronograma, Model model, RedirectAttributes redir) {
+        Cronograma cronograma = cronogramaService.obtenerCronograma(idCronograma);
+        model.addAttribute("idCronograma", idCronograma);
+
+        List<AsignacionProfesor> asignacionProfesors = asignacionService.listar(cronograma.getModulo().getIdModulo(), cronograma.getPrograma().getIdPrograma());
+        model.addAttribute("asignaciones", asignacionProfesors);
+        if (asignacionProfesors == null) {
+            model.addAttribute("msg", "Error en la conexión a la base de datos");
+            ProgramaFecha programaFecha = new ProgramaFecha();
+            List<Programa> programasConCronograma = programaService.listar();
+            programaFecha.setIdPro(cronograma.getPrograma().getIdPrograma());
+            programaFecha.setPrograma(cronograma.getPrograma());
+            List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(programaFecha.getIdPro());
+            List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
+            Programa programa = programaService.obtenerPrograma(programaFecha.getPrograma().getIdPrograma());
+            programaFecha.setPrograma(programa);
+            model.addAttribute("cronogramas", cronogramas);
+            model.addAttribute("programaFecha", programaFecha);
+            redir.addFlashAttribute("cronogramas", cronogramas);
+            redir.addFlashAttribute("programaFecha", programaFecha);
+            redir.addFlashAttribute("programa", programa);
+            redir.addFlashAttribute("msg", "Error en la conexión a la base de datos");
+
+            return "redirect:/admCronograma";
+        }
+
+        return "profesoresModulo";
+    }
+
+    @GetMapping(value = "/editarAsignacion")
+    public String editar(@RequestParam int idAsignacionProfesor, @RequestParam int idCronograma, Model model, RedirectAttributes redir) {
+
+        AsignacionProfesor asignacion = asignacionService.obtener(idAsignacionProfesor);
+        if (asignacion == null) {
+            Cronograma cronograma = cronogramaService.obtenerCronograma(idCronograma);
+
+            model.addAttribute("msg", "Error en la conexión a la base de datos");
+
+            return "redirect:/profesoresModulos?idCronograma=" + idCronograma;
+        }
+        model.addAttribute("asignacionProfesor", asignacion);
+
+        model.addAttribute("profesores", profesorService.listar());
+
+        return "asignacionProfesor";
+    }
+
+    @PostMapping("/guardarAsignacion")
+    public String guardar(@Valid AsignacionProfesor asignacion, RedirectAttributes redir) {
+        String msg = "";
+
+        if (asignacionService.guardar(asignacion) != 0) {
+            msg = "Asignacion insertado";
+        } else {
+            msg = "No se pudo guardar";
+        }
+
+        redir.addFlashAttribute("msg", msg);
+
+        return "redirect:/admCronograma";
+    }
 }

@@ -17,17 +17,45 @@ import org.springframework.stereotype.Service;
 @Service
 public class AsignacionProfesorService implements IAsignacionProfesorService {
 
+    @Autowired
     private IAsignacionProfesorDao asignacionProfesorDao;
 
     @Override
-    public List<AsignacionProfesor> listaPorModulos(int idModulo, int idPrograma) {
-
-        try {
+    public List<AsignacionProfesor> listar(int idModulo, int idPrograma) {
             return (List<AsignacionProfesor>) asignacionProfesorDao.listaPorModulos(idModulo, idPrograma);
+
+//        try {
+//        } catch (Exception e) {
+//            return null;
+//        }
+
+    }
+
+    @Override
+    public int guardar(AsignacionProfesor asignacionProfesor) {
+        int resultado = 1;
+        try {
+            asignacionProfesorDao.save(asignacionProfesor);
         } catch (Exception e) {
-            return null;
+            resultado = 0;
         }
 
+        return resultado;    }
+
+    @Override
+    public int eliminar(Integer idAsignacionProfesor) {
+        int resultado = 1;
+        try {
+            asignacionProfesorDao.deleteById(idAsignacionProfesor);
+        } catch (Exception e) {
+            resultado = 0;
+        }
+
+        return resultado;    }
+
+    @Override
+    public AsignacionProfesor obtener(Integer idAsignacionProfesor) {
+        return asignacionProfesorDao.getById(idAsignacionProfesor);
     }
 
 }

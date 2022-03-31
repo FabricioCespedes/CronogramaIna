@@ -79,7 +79,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="col-3">
                             <div th:if="${ programa != null}">
 
-                                <a th:href="@{/agregarModulo(idPro=${programaFecha.idPro}, fecha=${programaFecha.fechaInicio}) }"  class="btn btn-warning w-100">Añadir modulo</a>                                </div>
+                                <a th:href="@{/agregarModulo(idPro=${programaFecha.idPro}, fecha=${programaFecha.fechaInicio}) }"  class="btn btn-warning w-100">Añadir modulo</a>                            
+
+
+                            </div>
+
                         </div>
 
 
@@ -124,20 +128,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <th>Estado</th>
                                     <th>Fecha Inicio</th>
                                     <th>Fecha Fin</th>                                    
-                                    <th></th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="item:${cronogramas}">
-                                    <td th:text="${item.modulo.codigo}"></td>
+                                    <td th:text="${item.profesor.nombre}"></td>
                                     <td th:text="${item.modulo.nombreModulo}"></td>
-                                    <td th:text="${item.horasDia}"></td>
-                                    <td th:text="${item.modulo.horasTotales}"></td>
-                                    <td th:text="${item.horasInicio} + ' | '+${item.horaFin}"></td>
-                                    <td th:text="${item.estado}"></td>
                                     <td th:text="${item.fechaInicio}"></td>
                                     <td th:text="${item.fechaFin}"></td>
                                     <td>
+
+                                        <a  class="btn btn-warning">Editar</a> 
+                                        <a data-bs-toggle="modal" data-bs-target="#modalEliminar"  class="btn btn-warning"
+                                           th:href="@{/eliminarModulo(idCronograma=${item.idCronograma}) }"`
+                                           id="deleteButton"><i class="fas fa-user-times"></i> Eliminar</a>
+                                        <a th:href="@{/profesoresModulos(cronograma=${item.idCronograma}) }"  class="btn btn-warning">Ver profesores</a> 
+
+
                                     </td>
                                 </tr>
 
@@ -232,7 +240,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     });
 
                 </script>
+                <section>
+                    <div class="modal" tabindex="-1" id="modalEliminar" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">¿Esta seguro de eliminar?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+                                    <a  href="" id="delRef" class="btn btn-primary">Eliminar</a>
+                                </div>
+                            </div>
+                        </div>
 
+                    </div>
+                </section>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('.table #deleteButton').on('click', function (event) {
+                            event.preventDefault();
+                            var href = $(this).attr('href');
+                            $('#modalEliminar #delRef').attr('href', href);
+                            $('#modalEliminar').modal();
+
+                        });
+                    });
+
+                </script>
 
 
             </div>

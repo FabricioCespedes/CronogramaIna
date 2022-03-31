@@ -4,11 +4,14 @@
  */
 package com.ina.ProyectoJavaFabricioJose.controller;
 
+import com.ina.ProyectoJavaFabricioJose.domain.AsignacionProfesor;
 import com.ina.ProyectoJavaFabricioJose.domain.Cronograma;
 import com.ina.ProyectoJavaFabricioJose.domain.Modulo;
 import com.ina.ProyectoJavaFabricioJose.domain.PCronograma;
+import com.ina.ProyectoJavaFabricioJose.domain.Profesor;
 import com.ina.ProyectoJavaFabricioJose.domain.Programa;
 import com.ina.ProyectoJavaFabricioJose.domain.ProgramaFecha;
+import com.ina.ProyectoJavaFabricioJose.services.IAsignacionProfesorService;
 import com.ina.ProyectoJavaFabricioJose.services.ICronogramaService;
 import com.ina.ProyectoJavaFabricioJose.services.IModuloService;
 import com.ina.ProyectoJavaFabricioJose.services.IProfesorService;
@@ -22,6 +25,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,6 +43,9 @@ public class CronogramaController {
 
     @Autowired
     private IModuloService moduloService;
+
+    @Autowired
+    private IAsignacionProfesorService asignacionService;
 
     @GetMapping("/cronogramas")
     public String listar(Programa programa, Model model) {
@@ -187,4 +195,88 @@ public class CronogramaController {
         redir.addFlashAttribute("programa", programa);
         return "redirect:/admCronograma";
     }
+
+    @GetMapping("/editarModulo")
+    public String editar(@RequestParam Integer cronograma, Model model, RedirectAttributes redir) {
+        String msg = "";
+        Cronograma cronogram = cronogramaService.obtenerCronograma(cronograma);
+        if (cronogram == null) {
+            List<Programa> programasConCronograma = programaService.listar();
+            msg = "Error el cronograma se ha eliminado o fallado la conexión a la base de datos.";
+            redir.addFlashAttribute("msg", msg);
+            model.addAttribute("programas", programasConCronograma);
+            return "redirect:/admCronograma";
+        }
+
+        PCronograma pCronograma = new PCronograma();
+        pCronograma.setIdPrograma(cronogram.getPrograma().getIdPrograma());
+        pCronograma.setFechaInicio(cronogram.getFechaInicio().toString());
+        pCronograma.setIdModulo(cronogram.getModulo().getIdModulo());
+        pCronograma.setNombreModulo(cronogram.getModulo().getNombreModulo());
+        pCronograma.setCodigoM(cronogram.getModulo().getCodigo());
+        pCronograma.setNombrePrograma(cronogram.getPrograma().getNombrePrograma());
+        pCronograma.setCodigoP(cronogram.getPrograma().getCodigo());
+        pCronograma.setHoraInicio(cronogram.getHorasInicio().toString());
+        pCronograma.setHoraFin(cronogram.getHoraFin().toString());
+        pCronograma.setEstado(cronogram.getEstado());
+        pCronograma.setHorasDia(cronogram.getHorasDia());
+        Long idProfe;
+        idProfe = (long) 1;
+        pCronograma.setIdProfesor(idProfe);
+        List<String> listaDias = cronogramaService.listaPorModulos(cronogram.getPrograma().getIdPrograma(), cronogram.getModulo().getIdModulo());
+        if (listaDias.isEmpty()) {
+            msg = "lista vacia";
+        }
+        if (listaDias.contains("LUNES")) {
+            model.addAttribute("lunes", true);
+        }
+        if (listaDias.contains("MARTES")) {
+            model.addAttribute("martes", true);
+        }
+        if (listaDias.contains("MIÉRCOLES")) {
+            model.addAttribute("miercoles", true);
+        }
+        if (listaDias.contains("JUEVES")) {
+            model.addAttribute("jueves", true);
+        }
+        if (listaDias.contains("VIERNES")) {
+            model.addAttribute("viernes", true);
+        }
+        if (listaDias.contains("SÁBADO")) {
+            model.addAttribute("sabado", true);
+        }
+        model.addAttribute("pCronograma", pCronograma);
+        model.addAttribute("msg", msg);
+
+//        model.addAttribute("modulos", moduloService.listar(idPro));
+//        model.addAttribute("profesores", profesorService.listar());
+        return "actualizarModulo";
+    }
+
+    @RequestMapping(value = "/eliminarModulo", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
+    public String eliminar(Integer idCronograma, Model model, RedirectAttributes redir) {
+        Cronograma cronograma = cronogramaService.obtenerCronograma(idCronograma);
+        ProgramaFecha programaFecha = new ProgramaFecha();
+        if (cronogramaService.eliminar(idCronograma) == 1) {
+            model.addAttribute("msg", "El módulo sea eliminado");
+        }
+        List<Programa> programasConCronograma = programaService.listar();
+        programaFecha.setIdPro(cronograma.getPrograma().getIdPrograma());
+        programaFecha.setPrograma(cronograma.getPrograma());
+        List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(programaFecha.getIdPro());
+        List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
+        Programa programa = programaService.obtenerPrograma(programaFecha.getPrograma().getIdPrograma());
+        if (!lista.isEmpty()) {
+            programaFecha.setFechaInicio(lista.get(0));
+        }
+        programaFecha.setPrograma(programa);
+        model.addAttribute("cronogramas", cronogramas);
+        model.addAttribute("programaFecha", programaFecha);
+        redir.addFlashAttribute("cronogramas", cronogramas);
+        redir.addFlashAttribute("programaFecha", programaFecha);
+        redir.addFlashAttribute("programa", programa);
+        redir.addFlashAttribute("msg", "Eliminado con éxito");
+        return "redirect:/admCronograma";
+    }
+
 }

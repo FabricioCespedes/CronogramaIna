@@ -33,7 +33,7 @@ public class Cronograma implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_CRONOGRAMA")
-    private int idCronogrograma;
+    private int idCronograma;
 
     //Relación de muchos módulos a un cronograma 
     @JoinColumn(name = "ID_MODULO", nullable = false)

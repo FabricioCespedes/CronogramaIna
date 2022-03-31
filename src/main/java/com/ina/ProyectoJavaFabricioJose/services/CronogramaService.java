@@ -6,11 +6,8 @@ package com.ina.ProyectoJavaFabricioJose.services;
 
 import com.ina.ProyectoJavaFabricioJose.dao.ICronogramaDao;
 import com.ina.ProyectoJavaFabricioJose.domain.Cronograma;
-import com.ina.ProyectoJavaFabricioJose.domain.Programa;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +79,16 @@ public class CronogramaService implements ICronogramaService {
             throw e;
         }
 
+    }
+
+    @Override
+    public List<String> listaPorModulos(int idPrograma, int idModulo) {
+        try {
+            return (List<String>) cronogramaDao.listaPorModulos(idPrograma, idModulo);
+
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }

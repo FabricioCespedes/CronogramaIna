@@ -143,9 +143,9 @@ public class CronogramaController {
             redir.addFlashAttribute("msg", msg);
 
             pCronograma.setIdPrograma(pCronograma.getIdPrograma());
-            model.addAttribute("pCronograma", pCronograma);
-            model.addAttribute("modulos", moduloService.listar());
-            model.addAttribute("profesores", profesorService.listar());
+            redir.addFlashAttribute("pCronograma", pCronograma);
+            redir.addFlashAttribute("modulos", moduloService.listar());
+            redir.addFlashAttribute("profesores", profesorService.listar());
             return "redirect:/agregarModulo?idPro=" + pCronograma.getIdPrograma().toString() + "&fecha=" + pCronograma.getFechaInicio();
         }
 
@@ -154,11 +154,12 @@ public class CronogramaController {
             redir.addFlashAttribute("msg", msg);
 
             pCronograma.setIdPrograma(pCronograma.getIdPrograma());
-            model.addAttribute("pCronograma", pCronograma);
-            model.addAttribute("modulos", moduloService.listar());
-            model.addAttribute("profesores", profesorService.listar());
+            redir.addFlashAttribute("pCronograma", pCronograma);
+            redir.addFlashAttribute("modulos", moduloService.listar());
+            redir.addFlashAttribute("profesores", profesorService.listar());
             return "redirect:/agregarModulo?idPro=" + pCronograma.getIdPrograma().toString() + "&fecha=" + pCronograma.getFechaInicio();
         }
+
         if (cronogramaService.ingresarDias(pCronograma.isLunes(), pCronograma.isMartes(), pCronograma.isMiercoles(), pCronograma.isJueves(), pCronograma.isViernes(), pCronograma.isSabado(), (int) pCronograma.getIdModulo(), (int) pCronograma.getIdPrograma()) == 0) {
             Programa programa = programaService.obtenerPrograma(pCronograma.getIdPrograma());
 
@@ -172,20 +173,19 @@ public class CronogramaController {
                     programa.getCentro().getIdCentro(),
                     pCronograma.getFechaInicio()
             );
-            String[] arreglosFecha = fechaInicioR.split("-");
-            String anio = arreglosFecha[0];//Se va a descomponer la cadena de la fecha inicial del modulo para extraer su año de inicio.
-            if (anio == "0001") {
-                msg = "Error en la conexión a la base de datos2";
-                redir.addFlashAttribute("msg", msg);
 
-                pCronograma.setIdPrograma(pCronograma.getIdPrograma());
-                model.addAttribute("pCronograma", pCronograma);
-                model.addAttribute("modulos", moduloService.listar());
-                model.addAttribute("profesores", profesorService.listar());
-                return "redirect:/agregarModulo?idPro=" + pCronograma.getIdPrograma().toString() + "&fecha=" + pCronograma.getFechaInicio();
-            }
         } else {
             msg = "Error en la conexión a la base de datos";
+            redir.addFlashAttribute("msg", msg);
+
+            pCronograma.setIdPrograma(pCronograma.getIdPrograma());
+            model.addAttribute("pCronograma", pCronograma);
+            model.addAttribute("modulos", moduloService.listar());
+            model.addAttribute("profesores", profesorService.listar());
+            return "redirect:/agregarModulo?idPro=" + pCronograma.getIdPrograma().toString() + "&fecha=" + pCronograma.getFechaInicio();
+        }
+        if (!fechaInicioR.equals("1")) {
+            msg = fechaInicioR;
             redir.addFlashAttribute("msg", msg);
 
             pCronograma.setIdPrograma(pCronograma.getIdPrograma());
@@ -397,7 +397,7 @@ public class CronogramaController {
             Integer idModulo = asignacionProfesor.getModulo().getIdModulo();
             Integer idPrograma = asignacionProfesor.getPrograma().getIdPrograma();
 
-            listaCronogramas.add(cronogramaService.listarProfesor(idModulo,idPrograma).get(0));
+            listaCronogramas.add(cronogramaService.listarProfesor(idModulo, idPrograma).get(0));
         }
         List<Profesor> listaPro = profesorService.listar();
         redir.addFlashAttribute("profesor", profesor);

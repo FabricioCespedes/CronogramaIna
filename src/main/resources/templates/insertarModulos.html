@@ -135,7 +135,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <div class="col-3">
                                         <label for="jornada" class="form-label">Horas por día</label>
                                         <div class="input-group mb-3">
-                                            <input id="horaT" type="number" class="form-control" name="horaI" th:field="*{horasDia}"/>
+                                            <input id="horaT" type="number" min="1" max="6" class="form-control" name="horaI" th:field="*{horasDia}"/>
                                         </div>                     
                                     </div>
                                     <div class="col-3">

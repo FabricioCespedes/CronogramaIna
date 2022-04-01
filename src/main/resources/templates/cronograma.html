@@ -159,6 +159,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             </tbody>
                         </table>
+
+                        <div class="card-body" th:if="${totalHoras != null}">
+                            <h6 class="text text-center">Total de horas</h6>
+                            <h6 class="text text-center" th:text="${totalHoras}"></h6>
+
+                        </div>
                     </div>
 
 

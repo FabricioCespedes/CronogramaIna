@@ -97,13 +97,21 @@ public class CronogramaController {
         }
         List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
         Programa programa = programaService.obtenerPrograma(programaFecha.getPrograma().getIdPrograma());
-        int resul= cronogramaService.actualizar(programaFecha.getIdPro());
+        int resul = cronogramaService.actualizar(programaFecha.getIdPro());
+
         List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(programaFecha.getIdPro());
         if (!lista.isEmpty()) {
             programaFecha.setFechaInicio(lista.get(0));
         }
         programaFecha.setPrograma(programa);
         model.addAttribute("cronogramas", cronogramas);
+        int contador = 0;
+        for (Cronograma cronograma : cronogramas) {
+            contador = contador + cronograma.getModulo().getHorasTotales();
+        }
+        model.addAttribute("totalHoras", contador);
+        redir.addFlashAttribute("totalHoras", contador);
+
         model.addAttribute("programaFecha", programaFecha);
         redir.addFlashAttribute("cronogramas", cronogramas);
         redir.addFlashAttribute("programaFecha", programaFecha);
@@ -193,7 +201,12 @@ public class CronogramaController {
         List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
         redir.addFlashAttribute("cronogramas", cronogramas);
         redir.addFlashAttribute("programa", programa);
-
+        int contador = 0;
+        for (Cronograma cronograma : cronogramas) {
+            contador = contador + cronograma.getModulo().getHorasTotales();
+        }
+        model.addAttribute("totalHoras", contador);
+        redir.addFlashAttribute("totalHoras", contador);
         return "redirect:/admCronograma";
     }
 
@@ -264,6 +277,7 @@ public class CronogramaController {
             model.addAttribute("msg", "El módulo sea eliminado");
         }
         List<Programa> programasConCronograma = programaService.listar();
+        int resul = cronogramaService.actualizar(cronograma.getPrograma().getIdPrograma());
         programaFecha.setIdPro(cronograma.getPrograma().getIdPrograma());
         programaFecha.setPrograma(cronograma.getPrograma());
         List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(programaFecha.getIdPro());
@@ -278,6 +292,13 @@ public class CronogramaController {
         redir.addFlashAttribute("cronogramas", cronogramas);
         redir.addFlashAttribute("programaFecha", programaFecha);
         redir.addFlashAttribute("programa", programa);
+        int contador = 0;
+        for (Cronograma cronograma1 : cronogramas) {
+            contador = contador + cronograma.getModulo().getHorasTotales();
+        }
+
+        model.addAttribute("totalHoras", contador);
+        redir.addFlashAttribute("totalHoras", contador);
         redir.addFlashAttribute("msg", "Eliminado con éxito");
         return "redirect:/admCronograma";
     }

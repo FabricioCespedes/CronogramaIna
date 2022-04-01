@@ -17,5 +17,6 @@ public interface IAsignacionProfesorDao extends JpaRepository<AsignacionProfesor
     @Query(value = "select * from ASIGNACION_PROFESOR where ID_MODULO=?1 and ID_PROGRAMA=?2", nativeQuery = true)
     public Iterable<AsignacionProfesor> listaPorModulos(Integer idModulo, Integer idPrograma);
     
-    
+        @Query(value = "select * from ASIGNACION_PROFESOR where ID_PROFESOR=?1", nativeQuery = true)
+    public Iterable<AsignacionProfesor> listaPorProfesor(Long idProfesor);
 }

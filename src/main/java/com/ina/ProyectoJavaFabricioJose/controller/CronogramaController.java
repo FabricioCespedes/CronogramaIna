@@ -11,12 +11,16 @@ import com.ina.ProyectoJavaFabricioJose.domain.PCronograma;
 import com.ina.ProyectoJavaFabricioJose.domain.Profesor;
 import com.ina.ProyectoJavaFabricioJose.domain.Programa;
 import com.ina.ProyectoJavaFabricioJose.domain.ProgramaFecha;
+import com.ina.ProyectoJavaFabricioJose.domain.Usuario;
 import com.ina.ProyectoJavaFabricioJose.services.IAsignacionProfesorService;
 import com.ina.ProyectoJavaFabricioJose.services.ICronogramaService;
 import com.ina.ProyectoJavaFabricioJose.services.IModuloService;
 import com.ina.ProyectoJavaFabricioJose.services.IProfesorService;
 import com.ina.ProyectoJavaFabricioJose.services.IProgramaService;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -376,4 +380,35 @@ public class CronogramaController {
 
     }
 
+    @GetMapping("/cronogramaDocente")
+    public String listaCliente(Profesor profesor, Model model) {
+        List<Profesor> listaPro;
+        listaPro = profesorService.listar();
+        model.addAttribute("listaPro", listaPro);
+        return "cronogramasProfesor";
+
+    }
+
+    @PostMapping("/filtrarCronogramas")
+    public String filtar(Profesor profesor, Model model, RedirectAttributes redir) {
+        List<Cronograma> listaCronogramas = new ArrayList<Cronograma>();
+        List<AsignacionProfesor> lista = asignacionService.listar(profesor.getIdProfesor());
+        for (AsignacionProfesor asignacionProfesor : lista) {
+            Integer idModulo = asignacionProfesor.getModulo().getIdModulo();
+            Integer idPrograma = asignacionProfesor.getPrograma().getIdPrograma();
+
+            listaCronogramas.add(cronogramaService.listarProfesor(idModulo,idPrograma).get(0));
+        }
+        List<Profesor> listaPro = profesorService.listar();
+        redir.addFlashAttribute("profesor", profesor);
+        model.addAttribute("profesor", profesor);
+
+        redir.addFlashAttribute("listaPro", listaPro);
+        redir.addFlashAttribute("listaPro", listaPro);
+        redir.addFlashAttribute("cronogramas", listaCronogramas);
+
+        redir.addFlashAttribute("diasAusentes", lista);
+
+        return "redirect:/cronogramaDocente";
+    }
 }

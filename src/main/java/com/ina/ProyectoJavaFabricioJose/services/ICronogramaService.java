@@ -26,6 +26,8 @@ public interface ICronogramaService {
 
     public List<String> listaPorModulos(int idPrograma, int idModulo);
 
-    public int actualizar( int idPrograma);
+    public int actualizar(int idPrograma);
+
+    public List<Cronograma> listarProfesor(Integer idModulo, Integer idPrograma);
 
 }

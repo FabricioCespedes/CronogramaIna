@@ -58,4 +58,9 @@ public class AsignacionProfesorService implements IAsignacionProfesorService {
         return asignacionProfesorDao.getById(idAsignacionProfesor);
     }
 
+    @Override
+    public List<AsignacionProfesor> listar(Long idProfesor) {
+        return (List<AsignacionProfesor>) asignacionProfesorDao.listaPorProfesor(idProfesor);
+    }
+
 }

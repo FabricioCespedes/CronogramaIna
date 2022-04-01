@@ -101,4 +101,9 @@ public class CronogramaService implements ICronogramaService {
         }
     }
 
+    @Override
+    public List<Cronograma> listarProfesor(Integer idModulo, Integer idPrograma) {
+        List<Cronograma> lista = (List<Cronograma>) cronogramaDao.listarProfesor(idModulo,idPrograma);
+        return lista;    }
+
 }

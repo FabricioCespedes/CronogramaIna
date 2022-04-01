@@ -31,7 +31,8 @@ public class Profesor implements Serializable{
     @Column(name = "NOMBRE_PROFESOR")
     @NotEmpty(message="El Nombre del profesor es obligatorio")
     private String nombre;
-    
+    @Column(name = "CEDULA")
+private Long cedula;    
     @Column(name = "APELLIDO1_PROFESOR")
     @NotEmpty(message="El primer apellido del profesor es Obligatorio")
     private String apellido1;

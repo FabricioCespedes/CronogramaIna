@@ -31,7 +31,8 @@ public class Usuario implements Serializable{
     @Column(name = "NOMBRE_USUARIO")
     @NotEmpty(message="El Nombre del administrador es obligatorio")
     private String nombre;
-    
+    @Column(name = "CEDULA")
+private Long cedula;
     @Column(name = "APELLIDO1_USUARIO")
     @NotEmpty(message="El primer apellido del administrador es Obligatorio")
     private String apellido1;

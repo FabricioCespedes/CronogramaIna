@@ -57,6 +57,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                             </div>
                         </div>
+                        <div class="card-body">
+                            <h5>Seleccione un profesor</h5>
+                            <div class="row">
+
+                                <div class="col-10">
+                                    <label for="nombreProfesor" class="form-label">Nombre del profesor</label>
+                                    <div class="input-group mb-3">
+                                        <a id="btnBuscar" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalProfesores"><i class="fas fa-search"></i>Buscar profesor</a>
+                                        <input required="true" type="text" name="nombreProfesor" th:field="*{nombreProfesor}" 
+                                               readonly="true" class="form-control"  id="nameP" placeholder="Precione buscar profesor"/>
+                                    </div>
+                                </div>    
+                                <div class="col-2">
+                                    <label for="idProfesor" class="form-label">Identificación</label>
+                                    <input id="IdProfesor" type="text" class="form-control" name="idProfesor" th:field="*{idProfesor}" readonly="true" />
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="card-body" > 
 
                             <div class="row">
@@ -177,6 +196,80 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                 </form>
 
+                <script type="text/javascript">
+
+
+                    function seleccionP(id, nombre, ape1, ape2) {
+                        $("#IdProfesor").val(id);
+                        $("#nameP").val(nombre);
+                        $("#btnCerrar2").click();
+                    }
+
+                    $(document).ready(function () {
+                        $("#TablaProfesores").DataTable({
+                            "ordering": false,
+                            "lengthMenu": [5, 10, 15],
+                            "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                        });
+                    });
+
+                </script>
+
+
+                <section>
+                    <div class="modal fade vh-100" id="modalProfesores" tabindex="-1" role="dialog"
+                         aria-labelledby="profesorModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="profesorModalLabel" >Listado de profesores</h5>                                
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <div th:if="${profesores != null and !profesores.empty}">
+                                        <table class="table" id="TablaProfesores">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Identificación</th>
+                                                    <th>Nombre</th>
+                                                    <th>Primer apellido</th>
+                                                    <th>Segundo apellido</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="item:${profesores}">
+                                                    <td th:text="${item.idProfesor}"></td>
+                                                    <td th:text="${item.nombre}"></td>
+                                                    <td th:text="${item.apellido1}"></td>
+                                                    <td th:text="${item.apellido2}"></td>
+                                                    <td>
+                                                        <a href="#" th:onclick="seleccionP([[${item.idProfesor}]],[[${item.nombre}]],[[${item.apellido1}]],[[${item.apellido2}]] )">Seleccionar</a>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div th:if="${profesores == null or profesores.empty}">
+                                        No hay profesores en la base de datos
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button id="btnCerrar2" type="button" class="btn btn-primary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                </div>                            
+                            </div>
+
+                        </div>
+
+
+                    </div> <!--FIN MODAL-->
+                </section>
             </div>
         </div>
 

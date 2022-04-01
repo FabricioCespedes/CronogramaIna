@@ -16,13 +16,16 @@ public interface ICronogramaService {
 
     public Cronograma obtenerCronograma(Integer idCronograma);
 
-    public String guardar(Integer idModulo,Integer idPrograma, Long idProfesor, double horasDia, String horaInicio, String horaFin, String estado,Integer idCentro, String fechaInicio  );
+    public String guardar(Integer idModulo, Integer idPrograma, Long idProfesor, double horasDia, String horaInicio, String horaFin, String estado, Integer idCentro, String fechaInicio);
 
     public int eliminar(Integer idCronograma);
-    
+
     public int ingresarDias(boolean lunes, boolean martes, boolean miercoles, boolean jueves, boolean viernes, boolean sabado, int idModulo, int idPrograma);
-    
+
     public Iterable<String> obtenerFechaInicio(int idPrograma);
-    
-    public  List<String> listaPorModulos(int idPrograma, int idModulo);
+
+    public List<String> listaPorModulos(int idPrograma, int idModulo);
+
+    public int actualizar( int idPrograma);
+
 }

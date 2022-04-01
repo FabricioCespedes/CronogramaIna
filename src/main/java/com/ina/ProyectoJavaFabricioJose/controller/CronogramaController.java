@@ -97,7 +97,7 @@ public class CronogramaController {
         }
         List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
         Programa programa = programaService.obtenerPrograma(programaFecha.getPrograma().getIdPrograma());
-
+        int resul= cronogramaService.actualizar(programaFecha.getIdPro());
         List<String> lista = (List<String>) cronogramaService.obtenerFechaInicio(programaFecha.getIdPro());
         if (!lista.isEmpty()) {
             programaFecha.setFechaInicio(lista.get(0));
@@ -193,13 +193,14 @@ public class CronogramaController {
         List<Cronograma> cronogramas = cronogramaService.listarCronogramas(programaFecha.getPrograma().getIdPrograma());
         redir.addFlashAttribute("cronogramas", cronogramas);
         redir.addFlashAttribute("programa", programa);
+
         return "redirect:/admCronograma";
     }
 
-    @GetMapping("/editarModulo")
-    public String editar(@RequestParam Integer cronograma, Model model, RedirectAttributes redir) {
+    @GetMapping(value = "/editarModulo")
+    public String editar(@RequestParam Integer idCronograma, Model model, RedirectAttributes redir) {
         String msg = "";
-        Cronograma cronogram = cronogramaService.obtenerCronograma(cronograma);
+        Cronograma cronogram = cronogramaService.obtenerCronograma(idCronograma);
         if (cronogram == null) {
             List<Programa> programasConCronograma = programaService.listar();
             msg = "Error el cronograma se ha eliminado o fallado la conexión a la base de datos.";
@@ -220,9 +221,10 @@ public class CronogramaController {
         pCronograma.setHoraFin(cronogram.getHoraFin().toString());
         pCronograma.setEstado(cronogram.getEstado());
         pCronograma.setHorasDia(cronogram.getHorasDia());
-        Long idProfe;
-        idProfe = (long) 1;
-        pCronograma.setIdProfesor(idProfe);
+        List<AsignacionProfesor> listaProfe = asignacionService.listar(cronogram.getModulo().getIdModulo(), cronogram.getPrograma().getIdPrograma());
+        pCronograma.setIdProfesor(listaProfe.get(0).getProfesor().getIdProfesor());
+        Profesor profesor = profesorService.obtenerProfesor(listaProfe.get(0).getProfesor().getIdProfesor());
+        pCronograma.setNombreProfesor(profesor.getNombre() + " " + profesor.getApellido1());
         List<String> listaDias = cronogramaService.listaPorModulos(cronogram.getPrograma().getIdPrograma(), cronogram.getModulo().getIdModulo());
         if (listaDias.isEmpty()) {
             msg = "lista vacia";
@@ -247,6 +249,7 @@ public class CronogramaController {
         }
         model.addAttribute("pCronograma", pCronograma);
         model.addAttribute("msg", msg);
+        model.addAttribute("profesores", profesorService.listar());
 
 //        model.addAttribute("modulos", moduloService.listar(idPro));
 //        model.addAttribute("profesores", profesorService.listar());
@@ -330,7 +333,6 @@ public class CronogramaController {
     @PostMapping("/guardarAsignacion")
     public String guardar(@Valid AsignacionProfesor asignacion, RedirectAttributes redir) {
         String msg = "";
-
         if (asignacionService.guardar(asignacion) != 0) {
             msg = "Asignacion insertado";
         } else {
@@ -341,4 +343,16 @@ public class CronogramaController {
 
         return "redirect:/admCronograma";
     }
+
+    @RequestMapping(value = "/eliminar", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
+    public String eliminarCronograma(@RequestParam Integer idPrograma, Model model, RedirectAttributes redir) {
+        List<Cronograma> cronogramas = cronogramaService.listarCronogramas(idPrograma);
+
+        for (Cronograma cronograma : cronogramas) {
+            cronogramaService.eliminar(cronograma.getIdCronograma());
+        }
+        return "redirect:/admCronograma";
+
+    }
+
 }

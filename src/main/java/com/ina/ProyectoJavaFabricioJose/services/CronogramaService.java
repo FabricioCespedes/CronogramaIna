@@ -91,4 +91,14 @@ public class CronogramaService implements ICronogramaService {
         }
     }
 
+    @Override
+    public int actualizar(int idPrograma) {
+        try {
+            return cronogramaDao.actualizar(idPrograma);
+
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
 }

@@ -72,7 +72,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </div>
                         <div class="col-3">
                             <div th:if="${ programa != null}">
-                                <a th:href="@{/agregarModulo}"  class="btn btn-warning w-100">Eliminar</a>    
+                                <a data-bs-toggle="modal" data-bs-target="#modalEliminar"  class="btn btn-warning w-100"
+                                   th:href="@{/eliminar(idPrograma=${programa.idPrograma}) }" 
+                                   id="deleteButton2"><i class="fas fa-user-times"></i> Eliminar</a>
                             </div> 
 
                         </div>
@@ -133,7 +135,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </thead>
                             <tbody>
                                 <tr th:each="item:${cronogramas}">
-                                   <td th:text="${item.modulo.codigo}"></td>
+                                    <td th:text="${item.modulo.codigo}"></td>
                                     <td th:text="${item.modulo.nombreModulo}"></td>
                                     <td th:text="${item.horasDia}"></td>
                                     <td th:text="${item.modulo.horasTotales}"></td>
@@ -143,11 +145,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                     <td th:text="${item.fechaFin}"></td>
                                     <td>
 
-                                        <a  class="btn btn-warning">Editar</a> 
+                                        <a class="btn btn-warning"
+                                           th:href="@{/editarModulo(idCronograma=${item.idCronograma}) }" 
+                                           > Editar</a>
+
                                         <a data-bs-toggle="modal" data-bs-target="#modalEliminar"  class="btn btn-warning"
-                                           th:href="@{/eliminarModulo(idCronograma=${item.idCronograma}) }"`
+                                           th:href="@{/eliminarModulo(idCronograma=${item.idCronograma}) }" 
                                            id="deleteButton"><i class="fas fa-user-times"></i> Eliminar</a>
-                                        <a th:href="@{/profesoresModulos(idCronograma=${item.idCronograma}) }"  class="btn btn-warning">Ver profesores</a> 
 
 
                                     </td>
@@ -271,7 +275,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                         });
                     });
+                    $(document).ready(function () {
+                        $('#deleteButton2').on('click', function (event) {
+                            event.preventDefault();
+                            var href = $(this).attr('href');
+                            $('#modalEliminar #delRef').attr('href', href);
+                            $('#modalEliminar').modal();
 
+                        });
+                    });
                 </script>
 
 

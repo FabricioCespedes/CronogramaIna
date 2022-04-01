@@ -57,4 +57,8 @@ public interface ICronogramaDao extends JpaRepository<Cronograma, Integer> {
     @Query(value = "select dia from CRONOGRAMAS_DIAS CD inner join dias d on d.ID_DIA = cd.ID_DIA where ID_PROGRAMA =?1 and ID_MODULO =?2", nativeQuery = true)
     public Iterable<String> listaPorModulos(int idPrograma, int idModulo);
 
+    @Transactional
+    @Procedure(procedureName = "P_ACTUALIZAR_CRONOGRAMA", outputParameterName = "RETORNO")
+    public int actualizar(@Param("ID_PROGRAMA") int idPrograma
+    );
 }

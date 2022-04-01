@@ -91,7 +91,7 @@ public class ModuloController {
     /**
      * Similar a la función nuevo pero este carga un módulo para poder editarlo y guardarlo
      * @param modulo Objeto Modulo que se llena para cargar al formulaio sus respectivos datos
-     * @param model Objeto Modulo para identificar como se guardará el objeto en el formulario
+     * @param model Objeto Model para agregar enviar variables hacia un modelo
      * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
      * @return Una vista con un formulario para agregar un módulo pero con datos cargados
      */
@@ -115,9 +115,9 @@ public class ModuloController {
     /**
      * Al realizar ciertas acciones en la vista lista de módulos se llama a un modal para confirmar la eliminación de un módulo y ejecutarla
      * @param idModulo Id de módulo que se envía al llamar a la función para buscar y obtener a un módulo y eliminarlo
-     * @param model Objeto Modulo para identificar como se guardará el objeto en el formulario
+     * @param model Objeto Model para agregar enviar variables hacia un modelo
      * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
-     * @return 
+     * @return Una vista listando módulos junto con un aviso diciendo si se elimino o no el objeto
      */
     @RequestMapping(value = "/deleteMod", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
     public String eliminar(Integer idModulo, Model model, RedirectAttributes redir) {

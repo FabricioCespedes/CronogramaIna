@@ -107,7 +107,7 @@ public class FeriadosController {
      * @param model Objeto Model para agregar y enviar variables hacia un modelo
      * @return Una vista con un formulario para agregar un día feriado pero con datos cargados
      */
-    @PostMapping("/editarFeriados/{idDia}")
+    @GetMapping("/editarFeriados/{idDia}")
     public String editar(DiaFeriado diaFeriado, Model model) {
 
         diaFeriado = feriadoService.obtenerFeriado(diaFeriado.getIdDia());
@@ -115,8 +115,9 @@ public class FeriadosController {
             model.addAttribute("diaFeriado", diaFeriado);
         }
         String msg = "No se logró cargar el feriado";
-
-        return "redirect:/feriados";
+        List<Motivo> lista = motivoService.listar();
+        model.addAttribute("motivos", lista);
+        return "feriado";
     }
 
     /**

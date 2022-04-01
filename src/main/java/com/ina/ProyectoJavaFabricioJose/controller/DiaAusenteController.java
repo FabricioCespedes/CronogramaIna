@@ -116,7 +116,7 @@ public class DiaAusenteController {
     public String guardar(@Valid DiaAusente diaAusente, RedirectAttributes redir) {
         String msg = "";
         
-        if (diaAusente.getFechaInicio().before(diaAusente.getFechaFin())) {
+        if (diaAusente.getFechaInicio().before(diaAusente.getFechaFin()) || diaAusente.getFechaInicio().equals(diaAusente.getFechaFin())  ) {
             if (diaAusenteService.guardar(diaAusente) != 0) {
                 msg = "Día de ausencia insertado";
             } else {

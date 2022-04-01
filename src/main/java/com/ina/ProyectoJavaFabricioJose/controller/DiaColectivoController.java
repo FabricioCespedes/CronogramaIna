@@ -98,7 +98,7 @@ public class DiaColectivoController {
     public String guardar(@Valid DiasAusentesColectivos diaColectivo, RedirectAttributes redir) {
         String msg = "";
 
-        if (diaColectivo.getFechaInicio().before(diaColectivo.getFechaFin())) {
+        if (diaColectivo.getFechaInicio().before(diaColectivo.getFechaFin()) || diaColectivo.getFechaInicio().equals(diaColectivo.getFechaFin())  ) {
             if (colectivoService.guardar(diaColectivo) != 0) {
                 msg = "Fecha colectiva insertada";
             } else {

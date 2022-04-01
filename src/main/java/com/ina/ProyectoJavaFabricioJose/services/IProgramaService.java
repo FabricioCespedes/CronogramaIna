@@ -14,7 +14,7 @@ import java.util.List;
 public interface IProgramaService {
     
     public int guardar (Programa programa);    
-    public void eliminar(Programa programa);
+    public int eliminar(Programa programa);
     public List<Programa> listar();
     public List<Programa> listar(String nombrePrograma);
     public Programa obtenerPrograma(Integer idPrograma);

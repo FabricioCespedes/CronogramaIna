@@ -27,12 +27,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ProgramaController {
 
+    //Inyecciones de los dferentes servicios que nesecitará el controlador
     @Autowired
     private ProgramaService programaService;
 
     @Autowired
     private CentroService centroService;
 
+    /**
+     * Función que se encarga de devolver una vista con una lista de programas
+     * @param model Objeto Model para agregar enviar variables hacia un modelo 
+     * @return Una vista con una lista de programas
+     */
     @GetMapping("/programas")
     public String listaCliente(Model model, @ModelAttribute("msg") String msg) {
         List<Programa> lista = programaService.listar();
@@ -40,6 +46,12 @@ public class ProgramaController {
         return "listaProgramas";
     }
 
+    /**
+     * Función que se encarga de devolver una vista con una lista de programas filtrados
+     * @param txtTexto Cuadro de texto donde se envia el parámetro para filtrar
+     * @param model Objeto Model para agregar enviar variables hacia un modelo 
+     * @return Una vista con una lista de programas filtrados
+     */
     @PostMapping("/filtrarProgramas")
     public String filtar(String txtTexto, Model model) {
         List<Programa> lista = programaService.listar(txtTexto);
@@ -47,6 +59,12 @@ public class ProgramaController {
         return "listaProgramas";
     }
 
+    /**
+     * Función que retorna una vista con un formulario para agregar un nuevo programa.
+     * @param programa Objeto Programa para identificar como se guardará el objeto en el formulario
+     * @param model Objeto Model para agregar enviar variables hacia un modelo 
+     * @return Una vista con un formulario para agregar el nuevo programa 
+     */
     @GetMapping("/nuevoPrograma")
     public String nuevo(Programa programa, Model model) {
 
@@ -56,6 +74,14 @@ public class ProgramaController {
         return "programa";
     }
 
+    /**
+     * En la vista para agregar un programa, el formlario trabaja con este mapeo que 
+     * llama a una fucnción que hace unas respectivas validaciones y intenta guardar el programa
+     * @param programa Objeto Programa para identificar como se guardará el objeto en el formulario
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return  Una vista listando programas junto con un aviso diciendo si se agregó o no el objeto ingresado
+     * @throws ParseException Esta exepción en caso de que falle el parseo para calcular la horas diarias
+     */
     @PostMapping("/guardarPrograma")
     public String guardar(@Valid Programa programa, RedirectAttributes redir) throws ParseException {
         String msg = "";
@@ -86,6 +112,13 @@ public class ProgramaController {
         return "redirect:/programas";
     }
 
+    /**
+     * Similar a la función nuevo pero este carga un profesor para poder editarlo y guardarlo
+     * @param programa Objeto Programa para identificar como se guardará el objeto en el formulario
+     * @param model Objeto Model para agregar enviar variables hacia un modelo
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return Una vista con un formulario para agregar un programa pero con datos cargados
+     */
     @GetMapping("/editarPrograma/{idPrograma}")
     public String editar(Programa programa, Model model, RedirectAttributes redir) {
 
@@ -103,11 +136,21 @@ public class ProgramaController {
         return "redirect:/programas";
     }
 
+    /**
+     * Al realizar ciertas acciones en la vista lista de programas se llama a un modal para confirmar la eliminación de un programa y ejecutarla
+     * @param idPrograma Id de programa que se envía al llamar a la función para buscar y obtener a un programa y eliminarlo
+     * @param model Objeto Model para agregar enviar variables hacia un modelo
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return Una vista listando programas junto con un aviso diciendo si se elimino o no el objeto
+     */
     @RequestMapping(value = "/deleteProg", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
-    public String eliminar(Integer idPrograma, Model model) {
+    public String eliminar(Integer idPrograma, Model model, RedirectAttributes redir) {
+        String msg = "No se pudo eliminar el programa";
         Programa programa = programaService.obtenerPrograma(idPrograma);
         model.addAttribute("programa", programa);
-        programaService.eliminar(programa);
+        if (programaService.eliminar(programa) == 1) {
+            msg = "Programa eliminado";
+        }
         return "redirect:/programas";
     }
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Informacion del programa</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+            <div class="container-lg" style="background-color: antiquewhite">
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Datos del programa</h1></div>
+                </div>
+                <div class="row">
+                    <form th:action="@{/guardarPrograma}" method="post" th:object="${programa}">
+                        <input type="hidden" name="idPrograma" th:field="*{idPrograma}"/>
+
+                        <div class="form-group">
+                            <label for="codigo" class="form-label">Código del programa:</label>
+                            <input type="text" name="codigo" class="form-control" th:field="*{codigo}" readonly="true" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('codigo')}"
+                                  th:errors="*{codigo}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nombrePrograma" class="form-label">Nombre del programa:</label>
+                            <input type="text" name="nombrePrograma" readonly="true" class="form-control" th:field="*{nombrePrograma}" />
+                            <span class="text-danger font-italic"
+                                  th:if="${#fields.hasErrors('nombrePrograma')}"
+                                  th:errors="*{nombrePrograma}"></span>
+                        </div>
+
+
+                        
+
+                    </form>    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

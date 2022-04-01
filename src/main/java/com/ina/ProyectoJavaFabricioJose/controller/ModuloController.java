@@ -21,10 +21,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ModuloController {
-
+    
+    //Inyecciones de los dferentes servicios que nesecitará el controlador
     @Autowired
     private ModuloService moduloService;
-
+    
+    /**
+     * Función que se encarga de devolver una vista con una lista de módulos
+     * @param model Objeto Model para agregar enviar variables hacia un modelo     
+     * @return Una vista con una lista de módulos
+     */
     @GetMapping("/modulos")
     public String listaCliente(Model model, @ModelAttribute("msg") String msg) {
         List<Modulo> lista = moduloService.listar();
@@ -32,6 +38,12 @@ public class ModuloController {
         return "listaModulos";
     }
 
+    /**
+     * Función que se encarga de devolver una vista con una lista de módulos filtrados
+     * @param txtTexto Cuadro de texto por el que se va a filtrar los módulos
+     * @param model Objeto Model para agregar enviar variables hacia un modelo     
+     * @return Una vista con una lista de módulos filtrados
+     */
     @PostMapping("/filtrarModulos")
     public String filtar(String txtTexto, Model model) {
         List<Modulo> lista = moduloService.listar(txtTexto);
@@ -39,6 +51,12 @@ public class ModuloController {
         return "listaModulos";
     }
 
+    /**
+     * Función que retorna una vista con un formulario para agregar un nuevo módulo.
+     * @param modulo Objeto Modulo para identificar como se guardará el objeto en el formulario
+     * @param model Objeto Model para agregar enviar variables hacia un modelo     
+     * @return Una vista con un formulario para agregar el nuevo módulo
+     */
     @GetMapping("/nuevoModulo")
     public String nuevo(Modulo modulo, Model model) {
 
@@ -47,7 +65,14 @@ public class ModuloController {
 
         return "modulo";
     }
-
+    
+    /**
+     * En la vista para agregar un módulo, el formlario trabaja con este mapeo que 
+     * llama a una fucnción que hace unas respectivas validaciones y intenta guardar el módulo
+     * @param modulo Objeto Modulo para identificar como se guardará el objeto en el formulario
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return Una vista listando módulos junto con un aviso diciendo si se agregó o no el objeto ingresado
+     */
     @PostMapping("/guardarModulo")
     public String guardar(@Valid Modulo modulo, RedirectAttributes redir) {
         String msg = "";
@@ -63,6 +88,13 @@ public class ModuloController {
         return "redirect:/modulos";
     }
     
+    /**
+     * Similar a la función nuevo pero este carga un módulo para poder editarlo y guardarlo
+     * @param modulo Objeto Modulo que se llena para cargar al formulaio sus respectivos datos
+     * @param model Objeto Modulo para identificar como se guardará el objeto en el formulario
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return Una vista con un formulario para agregar un módulo pero con datos cargados
+     */
     @GetMapping("/editarModulo/{idModulo}")
     public String editar(Modulo modulo, Model model, RedirectAttributes redir) {
 
@@ -79,12 +111,23 @@ public class ModuloController {
 
         return "redirect:/modulos";
     }
-
+    
+    /**
+     * Al realizar ciertas acciones en la vista lista de módulos se llama a un modal para confirmar la eliminación de un módulo y ejecutarla
+     * @param idModulo Id de módulo que se envía al llamar a la función para buscar y obtener a un módulo y eliminarlo
+     * @param model Objeto Modulo para identificar como se guardará el objeto en el formulario
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return 
+     */
     @RequestMapping(value = "/deleteMod", method = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.PUT})
-    public String eliminar(Integer idModulo, Model model) {
+    public String eliminar(Integer idModulo, Model model, RedirectAttributes redir) {
+        String msg = "No se pudo eliminar el módulo";
         Modulo modulo = moduloService.obtenerModulo(idModulo);
         model.addAttribute("modulo", modulo);
-        moduloService.eliminar(modulo);
+        if (moduloService.eliminar(modulo) == 1) {
+            msg = "Módulo eliminado";
+        }
+        redir.addFlashAttribute("msg", msg);
         return "redirect:/modulos";
     }
     

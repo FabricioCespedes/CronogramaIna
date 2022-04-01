@@ -39,16 +39,16 @@ public class ProfesorService implements IProfesorService {
     }
 
     @Override
-    public List<Profesor> listar() {
+    public List<Profesor> listar(int idCentro) {
 
-        return profesorDao.findAll();
+        return (List<Profesor>) profesorDao.buscarProfesor(idCentro);
 
     }
 
     @Override
-    public List<Profesor> listar(String nombre) {
+    public List<Profesor> listar(String nombre, int idCentro) {
 
-        return (List<Profesor>) profesorDao.findByNombreContains(nombre);
+        return (List<Profesor>) profesorDao.buscarProfesor(nombre, idCentro);
 
     }
 
@@ -57,6 +57,13 @@ public class ProfesorService implements IProfesorService {
 
         return profesorDao.findById(idProfesor).orElse(null);
 
+    }
+    
+    @Override
+    public List<Profesor> listar() {
+ 
+        return profesorDao.findAll();
+ 
     }
 
 }

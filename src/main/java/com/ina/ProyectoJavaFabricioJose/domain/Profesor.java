@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -28,13 +28,11 @@ public class Profesor implements Serializable{
     @Column(name="ID_PROFESOR")
     private Long idProfesor;
     
-    @Column(name="CEDULA")
-    private Long cedula;
-    
     @Column(name = "NOMBRE_PROFESOR")
     @NotEmpty(message="El Nombre del profesor es obligatorio")
     private String nombre;
-    
+    @Column(name = "CEDULA")
+private Long cedula;
     @Column(name = "APELLIDO1_PROFESOR")
     @NotEmpty(message="El primer apellido del profesor es Obligatorio")
     private String apellido1;
@@ -57,9 +55,8 @@ public class Profesor implements Serializable{
 //    
 //    //Relacion de un profesor a muchas asignaciones de programa
     @OneToMany(mappedBy = "profesor")
-    private List<AsignacionProfesor> asignacionProfesor;
-    
-
+    private List<AsignacionProfesor> asignacionProfesor;    
+        
     
     
 }

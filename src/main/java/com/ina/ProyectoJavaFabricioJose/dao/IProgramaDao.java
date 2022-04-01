@@ -16,9 +16,11 @@ public interface IProgramaDao extends JpaRepository<Programa, Integer> {
     
     @Query(value = "Select p from PROGRAMAS p WHERE ID_MOTIVO =?1", nativeQuery = true)
     public Iterable<Programa> findByNombreProgramaContains(String nombrePrograma);
-    
-    
-    @Query(value = "SELECT P.ID_PROGRAMA, P.CODIGO, P.NOMBRE_PROGRAMA, P.HORAS_DIA, P.HORA_INICIO, P.HORA_FIN, P.ESTADO,P.ANIO, P.ID_CENTRO, P.GRUPO FROM PROGRAMAS P LEFT OUTER JOIN CRONOGRAMAS C  ON P.ID_PROGRAMA = C.ID_PROGRAMA", nativeQuery = true)
+
+    @Query(value = "SELECT P.ID_PROGRAMA, P.CODIGO, P.NOMBRE_PROGRAMA, P.HORAS_DIA, P.HORA_INICIO, P.HORA_FIN, P.ESTADO,P.ANIO, P.ID_CENTRO, P.GRUPO FROM PROGRAMAS P LEFT OUTER JOIN CRONOGRAMAS C  ON P.ID_PROGRAMA = C.ID_PROGRAMA WHERE C.ID_CRONOGRAMA IS NOT NULL", nativeQuery = true)
     public Iterable<Programa> listarProgrmasConCronogramas();
+    
+    @Query(value = "SELECT P.ID_PROGRAMA, P.CODIGO, P.NOMBRE_PROGRAMA, P.HORAS_DIA, P.HORA_INICIO, P.HORA_FIN, P.ESTADO,P.ANIO, P.ID_CENTRO, P.GRUPO FROM PROGRAMAS P LEFT OUTER JOIN CRONOGRAMAS C  ON P.ID_PROGRAMA = C.ID_PROGRAMA WHERE C.ID_CRONOGRAMA IS NULL", nativeQuery = true)
+    public Iterable<Programa> listarProgrmasSinCronogramas();
     
 }

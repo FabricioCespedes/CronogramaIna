@@ -12,13 +12,18 @@ public class CronogramasDias implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @JoinColumn(name = "ID_CRONOGRAMA", nullable = false)
+    @JoinColumn(name = "ID_PROGRAMA", nullable = false)
     @ManyToOne(optional = false)
-    private Cronograma cronograma; 
-        
+    private Programa programa;
+
+    @Id
+    @JoinColumn(name = "ID_MODULO", nullable = false)
+    @ManyToOne(optional = false)
+    private Modulo modulo;
+
     @Id
     @JoinColumn(name = "ID_DIA", nullable = false)
     @ManyToOne(optional = false)
-    private Dia diaC; 
+    private Dia diaC;
 
 }

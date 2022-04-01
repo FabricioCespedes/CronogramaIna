@@ -62,4 +62,10 @@ public class ProgramaService implements IProgramaService{
         return (List<Programa>) programaDao.listarProgrmasConCronogramas();
     }
     
+    
+    @Override
+    public List<Programa> listarProgramasSinCronogramas() {
+        return (List<Programa>) programaDao.listarProgrmasSinCronogramas();
+    }
+    
 }

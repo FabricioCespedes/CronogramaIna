@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ICentroService {
     public int guardar (Centro centro);    
-    public void eliminar(Integer idCentro);
+    public int eliminar(Integer idCentro);
     public List<Centro> listar();
     public List<Centro> listar(String nombre);
     public Centro obtenerCentro(int idCentro);

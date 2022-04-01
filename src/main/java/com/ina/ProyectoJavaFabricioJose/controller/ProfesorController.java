@@ -6,9 +6,11 @@ package com.ina.ProyectoJavaFabricioJose.controller;
 
 import com.ina.ProyectoJavaFabricioJose.domain.Centro;
 import com.ina.ProyectoJavaFabricioJose.domain.Profesor;
+import com.ina.ProyectoJavaFabricioJose.domain.Usuario;
 import com.ina.ProyectoJavaFabricioJose.services.CentroService;
 import com.ina.ProyectoJavaFabricioJose.services.ProfesorService;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,15 +32,17 @@ public class ProfesorController {
     private CentroService centroService;
 
     @GetMapping("/profesores")
-    public String listaCliente(Model model, @ModelAttribute("msg") String msg) {
-        List<Profesor> lista = profesorService.listar();
+    public String listaCliente(Model model, @ModelAttribute("msg") String msg, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        List<Profesor> lista = profesorService.listar(usuario.getCentro().getIdCentro());
         model.addAttribute("profesores", lista);
         return "listaProfesores";
     }
 
     @PostMapping("/filtrarProfesores")
-    public String filtar(String txtTexto, Model model) {
-        List<Profesor> lista = profesorService.listar(txtTexto);
+    public String filtar(String txtTexto, Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        List<Profesor> lista = profesorService.listar(txtTexto, usuario.getCentro().getIdCentro());
         model.addAttribute("profesores", lista);
         return "listaProfesores";
     }

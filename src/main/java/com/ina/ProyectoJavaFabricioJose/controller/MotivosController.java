@@ -20,10 +20,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MotivosController {
-
+    
+    //Inyecciones de los dferentes servicios que nesecitará el controlador
     @Autowired
     private MotivoService motivoService;
-
+    
+    /**
+     * Función que se encarga de devolver una vista con una lista de motivos
+     * @param model Objeto Model para agregar enviar variables hacia un modelo     
+     * @return Una vista con una lista de motivos
+     */
     @GetMapping("/motivos")
     public String listaCliente(Model model, @ModelAttribute("msg") String msg) {
         List<Motivo> lista = motivoService.listar();
@@ -31,6 +37,12 @@ public class MotivosController {
         return "listaMotivos";
     }
 
+    /**
+     * Función que se encarga de devolver una vista con una lista de motivos filtrados
+     * @param txtTexto Cuadro de texto por el que se va a filtrar los motivos
+     * @param model Objeto Model para agregar enviar variables hacia un modelo     
+     * @return Una vista con una lista de motivos filtrados
+     */
     @PostMapping("/filtrarMotivos")
     public String filtar(String txtTexto, Model model) {
         List<Motivo> lista = motivoService.listar(txtTexto);
@@ -38,6 +50,11 @@ public class MotivosController {
         return "listaMotivos";
     }
 
+    /**
+     * Función que retorna una vista con un formulario para agregar un nuevo motivo.
+     * @param motivo Objeto Motivo para identificar como se guardará el objeto en el formulario
+     * @return Una vista con un formulario para agregar el nuevo motivo    
+     */
     @GetMapping("/nuevoMotivo")
     public String nuevo(Motivo motivo) {
 

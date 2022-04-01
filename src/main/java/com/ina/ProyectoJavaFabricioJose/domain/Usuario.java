@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -27,13 +28,11 @@ public class Usuario implements Serializable{
     @Column(name="ID_USUARIO")
     private Long idUsuario;
     
-    @Column(name="CEDULA")
-    private Long cedula;
-    
     @Column(name = "NOMBRE_USUARIO")
     @NotEmpty(message="El Nombre del administrador es obligatorio")
     private String nombre;
-    
+    @Column(name = "CEDULA")
+private Long cedula;
     @Column(name = "APELLIDO1_USUARIO")
     @NotEmpty(message="El primer apellido del administrador es Obligatorio")
     private String apellido1;
@@ -53,8 +52,4 @@ public class Usuario implements Serializable{
     //Relacion de un administrador a muchas asignaciones de usuario
     @OneToMany(mappedBy = "usuario")
     private List<UsuariosProfesores> usuarioPorfesor;
-
-    
-
-    
 }

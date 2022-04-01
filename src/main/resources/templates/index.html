@@ -17,9 +17,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </header>
         </div>
         
-        <div th:if="${usuario != null}">
-            <p th:text="${usuario.nombre}"> </p>
-        </div>
+        <span th:if="${session.usuario != null}" th:text="'Bienvenido ' + ${session.usuario.nombre}">&nbsp;
+        </span>
         
     </body>
 </html>

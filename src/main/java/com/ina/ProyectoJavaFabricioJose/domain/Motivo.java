@@ -36,7 +36,7 @@ public class Motivo implements Serializable {
     private List<DiaFeriado> feriados;
 
     @OneToMany(mappedBy = "motivo")
-    private List<DiaAusente> diaAusete;
+    private List<DiaAusente> diaAusente;
 
     @OneToMany(mappedBy = "motivo")
     private List<DiasAusentesColectivos> ausentesColectivoses;

@@ -19,13 +19,21 @@ import com.ina.ProyectoJavaFabricioJose.services.IFeriadoService;
 
 @Controller
 public class FeriadosController {
-
+    
+    //Inyecciones de los dferentes servicios que nesecitará el controlador
     @Autowired
     private IFeriadoService feriadoService;
 
     @Autowired
     private IMotivoService motivoService;
-
+    
+    
+    /**
+     * Función que se encarga de devolver una vista con una lista de días feriados
+     * @param txtTexto Cuadro de texto por el que se va a filtrar los días  feriados
+     * @param model Objeto Model para agregar enviar variables hacia un modelo     
+     * @return Una vista con una lista de días feriados filtrada por un año
+     */
     @GetMapping("/feriados")
     public String listaFeriados(String txtTexto, Model model) {
 
@@ -41,6 +49,12 @@ public class FeriadosController {
 
     }
 
+    /**
+     * Devuelve la misma vista pasada pero filtrada por un año
+     * @param txtTexto Año por el que va a filtrar los días feriados
+     * @param model Objeto Model para agregar y enviar variables hacia un modelo
+     * @return Una vista con una lista de días feriados filtrada por un año
+     */
     @PostMapping("/filtrarFeriados")
     public String filtar(String txtTexto, Model model) {
         List<DiaFeriado> lista = feriadoService.listar(txtTexto);
@@ -48,6 +62,12 @@ public class FeriadosController {
         return "listaDiasFeriados";
     }
 
+    /**
+     * Función que retorna una vista con un formulario para agregar un nuevo día feriado.
+     * @param feriado Objeto DiaFeriado para identificar como se guardará el objeto en el formulario
+     * @param model Objeto Model para agregar y enviar variables hacia un modelo
+     * @return Una vista con un formulario para agregar el nuevo día feriado
+     */
     @GetMapping("/nuevoFeriado")
     public String nuevo(DiaFeriado feriado, Model model) {
 
@@ -57,6 +77,13 @@ public class FeriadosController {
         return "feriado";
     }
 
+    /**
+     * En la vista para agregar un día feriado el formlario trabaja con este mapeo que 
+     * llama a una fucnción que hace unas respectivas validaciones y intenta guardar el día feriado
+     * @param feriado Objeto DiaFeriado para identificar como se guardará el objeto en el formulario
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return Una vista listando días feriados junto con un aviso diciendo si se agregó o no el objeto ingresado
+     */
     @PostMapping("/guardarFeriado")
     public String guardar(@Valid DiaFeriado feriado, RedirectAttributes redir) {
         String msg = "";
@@ -74,6 +101,12 @@ public class FeriadosController {
         return "redirect:/feriados";
     }
 
+    /**
+     * Similar a la función nuevo pero este carga un día colectivo para poder editarlo y guardarlo
+     * @param diaFeriado Objeto DiaFeriado que se llena para cargar al formulaio sus respectivos datos
+     * @param model Objeto Model para agregar y enviar variables hacia un modelo
+     * @return Una vista con un formulario para agregar un día feriado pero con datos cargados
+     */
     @PostMapping("/editarFeriados/{idDia}")
     public String editar(DiaFeriado diaFeriado, Model model) {
 
@@ -86,11 +119,23 @@ public class FeriadosController {
         return "redirect:/feriados";
     }
 
+    /**
+     * Al realizar ciertas acciones en la vista lista de días feriados se llama a un modal para confirmar la eliminación de un día feriado y ejecutarla
+     * @param idDia Id de día colectivo que se envía al llamar a la función para buscar y obtener a un día colectivo y eliminarlo
+     * @param model Objeto Model para agregar y enviar variables hacia un modelo
+     * @param redir Objeto RedirectAttributes para envíar flash attributes a un modelo
+     * @return Una vista con días feriados y un mensaje diciendo si se ejecuto la acción
+     */
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET,RequestMethod.PUT })
-    public String eliminar(Integer idDia, Model model) {
+    public String eliminar(Integer idDia, Model model, RedirectAttributes redir) {
+        String msg = "No se pudo eliminar el día feriado";
         DiaFeriado diaFeriado = feriadoService.obtenerFeriado(idDia);
         model.addAttribute("diaFeriado", diaFeriado);
-        feriadoService.eliminar(idDia);
+        if (feriadoService.eliminar(idDia) == 1) {
+            msg = "Día feriado eliminado";
+        }
+        
+        redir.addFlashAttribute("msg", msg);
         return "redirect:/feriados";
     }
 

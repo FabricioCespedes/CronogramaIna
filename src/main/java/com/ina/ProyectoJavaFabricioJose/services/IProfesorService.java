@@ -11,7 +11,8 @@ import java.util.List;
 public interface IProfesorService {
     public int guardar (Profesor profesor);    
     public int eliminar(Profesor profesor);
+    public List<Profesor> listar(int idCentro);
     public List<Profesor> listar();
-    public List<Profesor> listar(String nombre);
+    public List<Profesor> listar(String nombre, int idCentro);
     public Profesor obtenerProfesor(Long idProfesor);
 }

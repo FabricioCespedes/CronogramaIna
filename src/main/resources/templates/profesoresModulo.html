@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Dia Feriado</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+
+            <div class="container-lg" style="background-color: antiquewhite">
+
+
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Asignación de profesores a un módulo</h1>
+                    </div>
+                </div>
+
+                <div th:if="${ msg != null and !msg.empty}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Mensaje:</strong> 
+                        <p th:text="${msg}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <span th:attr="msg=@{null}"></span>
+                    </div>
+                </div>
+
+
+
+
+
+                <div th:if="${asignaciones != null and !asignaciones.empty}" class="card" style="margin-top: 2%">
+                    <div class="card-header">
+                        <h3 class="text text-center">Lista de módulos</h3>
+                        <table class="table" id="TablaCronograma">
+                            <thead>
+                                <tr>
+                                    <th>Pro</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Fin</th>                                    
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item:${asignaciones}">
+                                    <td th:text="${item.profesor.nombre + ' ' + item.profesor.apellido1}"></td>
+                                    <td th:text="${item.fechaInicio}"></td>
+                                    <td th:text="${item.fechaFin}"></td>
+                                    <td>
+                                        <a th:href="@{/editarAsignacion(idAsignacionProfesor=${item.idAsignacionProfesor},  idCronograma=${idCronograma}   )}">
+                                            <i class="fas fa-user-edit"></i> Editar</a> |
+
+
+
+
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-6">
+                        <a th:href="@{/admCronograma}" class="btn btn-warning w-100">Regresar</a>    
+                    </div>
+                    <div class="col-6">
+                        <a th:href="@{/agregarProfesor(idCronograma=${idCronograma}}"  class="btn btn-warning w-100">Nueva asignación profesor</a>                            
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </body>
+
+</html>

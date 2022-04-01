@@ -30,8 +30,15 @@ public class CentroService implements ICentroService {
     }
 
     @Override
-    public void eliminar(Integer idCentro) {
-        centroDao.deleteById(idCentro);
+    public int eliminar(Integer idCentro) {
+        int result;
+        try {
+            centroDao.deleteById(idCentro);
+            result = 1;
+        } catch (Exception e) {
+            result = 0;
+        }
+        return result;
     }
 
     @Override

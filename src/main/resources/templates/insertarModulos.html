@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head th:replace="plantillas/plantilla1 ::head">
+        <title>Dia Feriado</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla1 ::nav">
+
+        </header>
+        <div class="container-lg p-20 bg-warning">
+
+            <div class="container-lg" style="background-color: antiquewhite">
+
+
+                <div class="card border-0 bg-warning" style="margin-top: 2%" >
+                    <div class="card-header"> <h1>Insertar módulo al cronograma</h1>
+                        <h5>Ingrese los datos y precione guardar</h5>
+                    </div>
+                </div>
+
+                <div th:if="${ msg != null and !msg.empty}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Mensaje:</strong> 
+                        <p th:text="${msg}"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <span th:attr="msg=@{null}"></span>
+                    </div>
+                </div>
+
+                <form th:action="@{/guardarModulo2}"  method="post" th:object="${pCronograma}">
+                    <input  type="hidden" class="form-control" name="idPrgroama" th:field="*{idPrograma}" />
+                    <input  type="hidden" class="form-control" th:field="*{fechaInicio}" />
+
+                    <div class="card border-0 bg-light" style="margin-top: 2%" >
+                        <div class="card-header"> <h5>Datos del módulo</h5></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <h5>Seleccione los datos del módulo</h5>
+                                <div class="col-10">
+                                    <label for="nombreModulo" class="form-label">Nombre del programa</label>
+                                    <div class="input-group mb-3">
+                                        <a id="btnBuscar" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalModulos"><i class="fas fa-search"></i>Buscar módulo</a>
+                                        <input required="true" type="text" name="nombreModulo" th:field="*{nombreModulo}" 
+                                               readonly="true" class="form-control"  id="nameMod" placeholder="Precione buscar módulo"/>
+                                    </div>
+                                </div>                             
+                                <div class="col-2">
+                                    <input type="hidden" id="IdModulo" name="idModulo" th:field="*{idModulo}"/>
+                                    <label for="codigo" class="form-label">Código de referencia</label>
+                                    <input id="Codigo" type="text" class="form-control" name="codigo" th:field="*{codigoM}" readonly="true" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5>Seleccione un profesor</h5>
+                            <div class="row">
+
+                                <div class="col-10">
+                                    <label for="nombreProfesor" class="form-label">Nombre del profesor</label>
+                                    <div class="input-group mb-3">
+                                        <a id="btnBuscar" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalProfesores"><i class="fas fa-search"></i>Buscar profesor</a>
+                                        <input required="true" type="text" name="nombreProfesor" th:field="*{nombreProfesor}" 
+                                               readonly="true" class="form-control"  id="nameP" placeholder="Precione buscar profesor"/>
+                                    </div>
+                                </div>    
+                                <div class="col-2">
+                                    <label for="idProfesor" class="form-label">Identificación</label>
+                                    <input id="IdProfesor" type="text" class="form-control" name="idProfesor" th:field="*{idProfesor}" readonly="true" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-body" > 
+
+                            <div class="row">
+                                <h5>Seleccione los días en que se brinda el módulo</h5>
+                                <div class="col-2">
+                                    <label for="codigo" class="form-label">Lunes</label>
+                                    <input  class="form-check-input"
+                                            type="checkbox" 
+                                            name="lunes" 
+                                            th:checked="${lunes}"/>                                
+                                </div>
+                                <div class="col-2">
+                                    <label for="codigo" class="form-label">Martes</label>
+                                    <input  class="form-check-input"
+                                            type="checkbox" 
+                                            name="martes" 
+                                            th:checked="${martes}"/>                                
+                                </div>
+                                <div class="col-2">
+                                    <label for="codigo" class="form-label">Miércoles</label>
+                                    <input  class="form-check-input"
+                                            type="checkbox" 
+                                            name="miercoles" 
+                                            th:checked="${miercoles}"/>                                
+                                </div>
+                                <div class="col-2">
+                                    <label for="codigo" class="form-label">Jueves</label>
+                                    <input  class="form-check-input"
+                                            type="checkbox" 
+                                            name="jueves" 
+                                            th:checked="${jueves}"/>                                
+                                </div>
+                                <div class="col-2">
+                                    <label for="codigo" class="form-label">Viernes</label>
+                                    <input  class="form-check-input"
+                                            type="checkbox" 
+                                            name="viernes" 
+                                            th:checked="${viernes}"/>                                
+                                </div>
+                                <div class="col-2">
+                                    <label for="codigo" class="form-label">Sábado</label>
+                                    <input  class="form-check-input"
+                                            type="checkbox" 
+                                            name="sabado" 
+                                            th:checked="${sabado}"/>                                
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <h5>Ingrese los siguientes datos</h5>
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label for="jornada" class="form-label">Horas por día</label>
+                                        <div class="input-group mb-3">
+                                            <input id="horaT" type="number" class="form-control" name="horaI" th:field="*{horasDia}"/>
+                                        </div>                     
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="horaInicio" class="form-label">Hora inicio</label>
+                                        <input id="horaI" type="time" class="form-control" name="horaI" th:field="*{horaInicio}"/>
+
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="horaFin" class="form-label">Hora fin</label>
+                                        <input id="horaF" type="time" class="form-control" name="horaI" th:field="*{horaFin}"/>
+
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="nombreModulo" class="form-label">Estado</label>
+                                        <div class="input-group mb-3">
+                                            <select name="jornada" th:field="*{estado}" class="form-control">
+                                                <option th:value="Activo">Activo</option>
+                                                <option th:value="Terminado">Terminado</option>
+
+                                                <option th:value="Suspendido" th:selected="true"
+                                                        >Suspendido</option>
+                                            </select>
+                                        </div>    
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <span class="font-italic text-danger"
+                                  th:if="${#fields.hasErrors('nombreModulo')}"
+                                  th:errors="*{nombreModulo}"
+                                  >Error</span>
+
+                            <span class="font-italic text-danger"
+                                  th:if="${#fields.hasErrors('nombreProfesor')}"
+                                  th:errors="*{nombreProfesor}"
+                                  >Error</span>
+
+                            <span class="font-italic text-danger"
+                                  th:if="${#fields.hasErrors('horaInicio')}"
+                                  th:errors="*{cantidad}"
+                                  >Error</span>
+                        </div>
+                        <div class="card-footer" > 
+                            <div class="row">
+                                <div class="col-6">
+                                    <a th:href="@{/admCronograma}" class="btn btn-warning w-100">Regresar</a>    
+                                </div>
+                                <div class="col-6">
+                                    <input type="submit" name="btnSeleccionar" class="btn btn-warning w-100" value="Añadir módulo al cronograma"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+
+                <section>
+                    <div class="modal fade vh-100" id="modalModulos" tabindex="-1" role="dialog"
+                         aria-labelledby="moduloModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="programaModalLabel" >Listado de módulos</h5>                                
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <div th:if="${modulos != null and !modulos.empty}">
+                                        <table class="table" id="TablaProgramas">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Código</th>
+                                                    <th>Módulo</th>
+                                                    <th>Horas totales</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="item:${modulos}">
+                                                    <td th:text="${item.codigo}"></td>
+                                                    <td th:text="${item.nombreModulo}"></td>
+                                                    <td th:text="${item.horasTotales}"></td>
+                                                    <td>
+                                                        <a href="#" th:onclick="seleccionar([[${item.idModulo}]],[[${item.codigo}]],[[${item.nombreModulo}]])">Seleccionar</a>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div th:if="${modulos == null or modulos.empty}">
+                                        No hay modulos en la base de datos
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button id="btnCerrar" type="button" class="btn btn-primary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                </div>                            
+                            </div>
+
+                        </div>
+
+
+                    </div> <!--FIN MODAL-->
+                </section>
+
+
+                <script type="text/javascript">
+                    function seleccionar(id, codigo, nombre) {
+                        $("#IdModulo").val(id);
+                        $("#Codigo").val(codigo);
+                        $("#nameMod").val(nombre);
+                        $("#btnCerrar").click();
+                    }
+
+                    $(document).ready(function () {
+                        $("#TablaProgramas").DataTable({
+                            "ordering": false,
+                            "lengthMenu": [5, 10, 15],
+                            "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                        });
+                    });
+
+                    function seleccionP(id, nombre, ape1, ape2) {
+                        $("#IdProfesor").val(id);
+                        $("#nameP").val(nombre);
+                        $("#btnCerrar2").click();
+                    }
+
+                    $(document).ready(function () {
+                        $("#TablaProfesores").DataTable({
+                            "ordering": false,
+                            "lengthMenu": [5, 10, 15],
+                            "language": {"url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"}
+                        });
+                    });
+
+                </script>
+
+
+                <section>
+                    <div class="modal fade vh-100" id="modalProfesores" tabindex="-1" role="dialog"
+                         aria-labelledby="profesorModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="profesorModalLabel" >Listado de profesores</h5>                                
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <div th:if="${profesores != null and !profesores.empty}">
+                                        <table class="table" id="TablaProfesores">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Identificación</th>
+                                                    <th>Nombre</th>
+                                                    <th>Primer apellido</th>
+                                                    <th>Segundo apellido</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="item:${profesores}">
+                                                    <td th:text="${item.idProfesor}"></td>
+                                                    <td th:text="${item.nombre}"></td>
+                                                    <td th:text="${item.apellido1}"></td>
+                                                    <td th:text="${item.apellido2}"></td>
+                                                    <td>
+                                                        <a href="#" th:onclick="seleccionP([[${item.idProfesor}]],[[${item.nombre}]],[[${item.apellido1}]],[[${item.apellido2}]] )">Seleccionar</a>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div th:if="${profesores == null or profesores.empty}">
+                                        No hay profesores en la base de datos
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button id="btnCerrar2" type="button" class="btn btn-primary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                </div>                            
+                            </div>
+
+                        </div>
+
+
+                    </div> <!--FIN MODAL-->
+                </section>
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+    </body>
+
+</html>

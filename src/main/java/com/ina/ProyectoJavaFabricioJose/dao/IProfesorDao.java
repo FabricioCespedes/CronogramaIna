@@ -12,5 +12,10 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IProfesorDao extends JpaRepository<Profesor, Long> {
     
-    public Iterable<Profesor> findByNombreContains(String nombre);
+    @Query(value = "Select * from PROFESORES p Where p.ID_CENTRO=?1", nativeQuery = true)
+    public Iterable<Profesor> buscarProfesor(int idCentro);
+ 
+    @Query(value = "Select * from PROFESORES p Where p.NOMBRE_PROFESOR LIKE %?1% AND p.ID_CENTRO=?2", nativeQuery = true)
+    public Iterable<Profesor> buscarProfesor(String nombre, int idCentro);
+   
 }

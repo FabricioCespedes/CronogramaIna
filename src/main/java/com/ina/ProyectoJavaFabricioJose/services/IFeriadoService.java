@@ -8,10 +8,7 @@ import com.ina.ProyectoJavaFabricioJose.domain.DiaFeriado;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author josea
- */
+
 public interface IFeriadoService {
     public int guardar(DiaFeriado feriado);
     public int eliminar(Integer idDia);

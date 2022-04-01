@@ -19,5 +19,6 @@ public interface IProgramaService {
     public List<Programa> listar(String nombrePrograma);
     public Programa obtenerPrograma(Integer idPrograma);
     public List<Programa> listarProgramasConCronogramas();
+    public List<Programa> listarProgramasSinCronogramas();
     
 }

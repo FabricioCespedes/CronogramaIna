@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -44,7 +45,7 @@ public class Modulo implements Serializable {
     private Modulo modulo;
 
     @Column(name = "HORAS_TOTALES")
-    @NotEmpty(message = "Las horas totales del módulo son obligatorias")
+    @NotNull(message = "Las horas totales del módulo son obligatorias")
     private int horasTotales;
 
     //Relacion de un modulo a muchas asignaciones de programa

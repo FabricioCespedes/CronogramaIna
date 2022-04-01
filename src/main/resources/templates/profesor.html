@@ -21,6 +21,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <div class="row">
                     <form th:action="@{/guardarProfesor}" method="post" th:object="${profesor}">
                         
+                        <input type="hidden"   class="form-control" th:field="*{idProfesor}" />
+
                         <div class="form-group">
                             <label for="cedula" class="form-label">Cédula:</label>
                             <input type="number" name="cedula" class="form-control" th:field="*{cedula}" />
@@ -36,7 +38,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                   th:if="${#fields.hasErrors('nombre')}"
                                   th:errors="*{nombre}"></span>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="apellido1" class="form-label">Primer apellido:</label>
                             <input type="text" name="apellido1" class="form-control" th:field="*{apellido1}" />
@@ -44,7 +46,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                   th:if="${#fields.hasErrors('apellido1')}"
                                   th:errors="*{apellido1}"></span>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="apellido2" class="form-label">Segundo apellido:</label>
                             <input type="text" name="apellido2" class="form-control" th:field="*{apellido2}" />
@@ -52,15 +54,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                   th:if="${#fields.hasErrors('apellido2')}"
                                   th:errors="*{apellido2}"></span>
                         </div>
-                        
-                        <input type="hidden" id="IdCentro" name="idCentro" th:field="*{centro.idCentro}"/>
-                        
+
+
                         <div class="form-group">
                             <label for="centro" class="form-label">Centro:</label>
                             <div class="input-group mb-3">
                                 <a id="btnBuscarCentro" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#modalCentros"><i class="fas fa-search"></i>Buscar Centro</a>
                                 <input required="true" id="NombreCentro" type="text" name="nombreCentro" th:field="*{centro.nombre}" 
-                                       readonly="true" class="form-control"/>   
+                                       readonly="true" class="form-control"/>  
+                                <input type="hidden" id="IdCentro" name="idCentro" th:field="*{centro.idCentro}"/>
+
                             </div>
 
                         </div>
@@ -75,52 +78,52 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
         <section>
-                <div class="modal fade" id="modalCentros" tabindex="-1" role="dialog"
-                     aria-labelledby="centroModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="motivoModalLabel" >Listado de Centros</h5>                                
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal fade" id="modalCentros" tabindex="-1" role="dialog"
+                 aria-labelledby="centroModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="motivoModalLabel" >Listado de Centros</h5>                                
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div th:if="${centros != null and !centros.empty}">
+                                <table class="table" id="TablaCentros">
+                                    <thead>
+                                        <tr>
+                                            <th>Centro</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item:${centros}">
+                                            <td th:text="${item.nombre}"></td>
+                                            <td>
+                                                <a href="#" th:onclick="seleccionar([[${item.idCentro}]],[[${item.nombre}]])">Seleccionar</a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="modal-body">
-                                <div th:if="${centros != null and !centros.empty}">
-                                    <table class="table" id="TablaCentros">
-                                        <thead>
-                                            <tr>
-                                                <th>Centro</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr th:each="item:${centros}">
-                                                <td th:text="${item.nombre}"></td>
-                                                <td>
-                                                    <a href="#" th:onclick="seleccionar([[${item.idCentro}]],[[${item.nombre}]])">Seleccionar</a>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div th:if="${centros == null or centros.empty}">
-                                    No hay centros en la base de datos
-                                </div>
-
+                            <div th:if="${centros == null or centros.empty}">
+                                No hay centros en la base de datos
                             </div>
 
-                            <div class="modal-footer">
-                                <button id="btnCerrar" type="button" class="btn btn-primary"
-                                        data-bs-dismiss="modal">Cerrar</button>
-                            </div>                            
                         </div>
 
+                        <div class="modal-footer">
+                            <button id="btnCerrar" type="button" class="btn btn-primary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                        </div>                            
                     </div>
 
+                </div>
 
-                </div> <!--FIN MODAL-->
-            </section>
-        
+
+            </div> <!--FIN MODAL-->
+        </section>
+
         <script type="text/javascript">
             function seleccionar(id, nombre) {
                 $("#IdCentro").val(id);

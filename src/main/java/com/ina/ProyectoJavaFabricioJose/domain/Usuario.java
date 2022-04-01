@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,35 +22,36 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "USUARIOS")
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @Column(name="ID_USUARIO")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_USUARIO")
     private Long idUsuario;
-    
+
     @Column(name = "NOMBRE_USUARIO")
-    @NotEmpty(message="El Nombre del administrador es obligatorio")
+    @NotEmpty(message = "El Nombre del administrador es obligatorio")
     private String nombre;
     @Column(name = "CEDULA")
-private Long cedula;
+    private Long cedula;
     @Column(name = "APELLIDO1_USUARIO")
-    @NotEmpty(message="El primer apellido del administrador es Obligatorio")
+    @NotEmpty(message = "El primer apellido del administrador es Obligatorio")
     private String apellido1;
-    
+
     @Column(name = "APELLIDO2_USUARIO")
     private String apellido2;
-    
+
     @Column(name = "CONTRASENIA")
-    @NotEmpty(message="La contaseña es obligatoria")
+    @NotEmpty(message = "La contaseña es obligatoria")
     private String contrasenia;
-    
+
     //Relación de uno a un centro 
     @JoinColumn(name = "ID_CENTRO", nullable = false)
     @ManyToOne(optional = false)
     private Centro centro;
-    
+
     //Relacion de un administrador a muchas asignaciones de usuario
     @OneToMany(mappedBy = "usuario")
     private List<UsuariosProfesores> usuarioPorfesor;

@@ -47,11 +47,11 @@ public class Programa implements Serializable {
 
     @Column(name = "HORA_INICIO")
     @NotNull(message = "Las horas por día del programa son obligatorias")
-    private Time horaInicio;
+    private String horaInicio;
 
     @Column(name = "HORA_FIN")
     @NotNull(message = "Las horas por día del programa son obligatorias")
-    private Time horaFin;
+    private String horaFin;
 
     @Column(name = "ESTADO")
     @NotEmpty(message = "El estado del programa es obligatorio")
